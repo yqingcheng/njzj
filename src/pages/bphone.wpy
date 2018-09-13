@@ -1,0 +1,186 @@
+<style lang="scss">
+    page{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        font: normal 30rpx/1.68 -apple-system-font, 'Helvetica Neue', Helvetica, 'Microsoft YaHei', sans-serif;
+    }
+    page{
+        background: #f5f5f5;
+    }
+    /*总体主盒子*/
+    .container {
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        color: #939393;
+
+    }
+    .section{width:90%;margin-left:5%; margin-right:5%; margin-top: 4em; border: 1px solid #f5f4f4; border-radius: 5px; height: 3em; line-height: 3em;}
+    .s_l{ width:15%; float: left;}
+    .s_l image{width:2em;height:2em; margin-top:.5em; margin-left: .5em;}
+    .s_r{ width:85%;float: left;}
+    .s_r input{width: 98%; padding-left: 2%; height:3em;}
+    .sections{width:90%;margin-left:5%; margin-right:5%; margin-top:1em; border: 1px solid #f5f4f4; border-radius: 5px; height: 3em; line-height: 3em;}
+    .ss_l{ width:15%; float: left;}
+    .ss_l image{width:2em;height:2em; margin-top:.5em; margin-left: .5em;}
+    .ss_c{ width:40%;float: left;}
+    .ss_c input{width: 98%; padding-left: 2%; height:3em;}
+    .ss_r{ width:45%;float: left;}
+    .ss_r button{width:100%; background: #2cd088; color: #fff;  font-size: 1em; border-radius: 0; height: 3em; line-height: 3em;}
+    .section3{width:90%;margin-left:5%; margin-right:5%; margin-top:3em; border: 1px solid #f5f4f4; border-radius: 5px; height: 3em; line-height: 3em;}
+    .section3 button{ background: #2cd088; color: #fff; }
+    .section4{ position: fixed; bottom:4em; width:100%; display: flex;align-items: center;justify-content: center}
+</style>
+
+<template>
+    <view class="container">
+        <form bindsubmit="formSubmit" bindreset="formReset">
+            <view class="section">
+                <view class="s_l"> <image src="https://h5.yzyy365.com/yunimg/ip1.png"/></view>
+                <view class="s_r"><input name="phone_no" bindinput="useriphone" placeholder="请输入手机号"  /></view>
+            </view>
+            <view class="sections">
+                <view class="ss_l"> <image src="https://h5.yzyy365.com/yunimg/ip2.png"/></view>
+                <view class="ss_c"><input  name="code" value="{{userpassword}}" bindinput="userpassword" placeholder="请输入验证码"   /></view>
+                <view class="ss_r"><button disabled='{{disabled}}' data-id="2" bindtap="getVerificationCode">{{time}}</button></view>
+            </view>
+
+            <view class="section3">
+                <button formType="submit">绑定</button>
+            </view>
+
+            <view  class="section4">
+                <checkbox-group bindchange="checkboxChange">
+                    <label>
+                        <checkbox class="cbox" checked="{{checked}}" style="zoom:60%;"/>
+                    </label>
+                </checkbox-group>
+                <!--<label>-->
+                    <!--<checkbox  class="cbox" bindchange="checkboxChange" value="checkbox" style="zoom:60%;" checked="{{checked}}"  />-->
+                <!--</label>-->
+                <text style="margin-top: 4px" bindtap="goprotocol">我已阅读并同意<text style="color:#2cd088; margin:0 5px;">使用条款</text>和<text style="color:#2cd088; margin:0 5px;">隐私协议</text></text>
+            </view>
+        </form>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    var validate = require("../mixins/validate").validate;
+
+    export default class Bphone extends wepy.page {
+        config = {
+            navigationBarTitleText: '绑定手机号'
+        };
+        components = {
+
+        };
+
+        data = {
+            bindId:"",
+            userpic:"https://h5.yzyy365.com/yunimg/1.png",
+            // username:'我是谁',
+            // date:'请选择日期',
+            // fun_id:2,
+            time: '获取验证码', //倒计时
+            currentTime:60,
+            useriphone:"",
+            userpassword:"",
+            checked:false,
+            disabled: false
+        };
+
+        computed = {};
+        getCode(options){
+            console.log(this)
+            var interval = setInterval( () => {
+                this.currentTime--;
+                this.time = this.currentTime+'秒'
+                if (this.currentTime <= 0) {
+                    clearInterval(interval)
+                    this.time = '重新发送'
+                    this.currentTime = 60
+                    this.disabled = false
+                }
+                this.$apply()
+            }, 1000)
+            wx.request({
+                url: `${this.$parent.globalData.h5url}/wx/sendCode3.do`,
+                data: {
+                    phone_no: this.useriphone
+                },
+                header: {
+                    'content-type': 'application/json' // 默认值
+                },
+                success: function(res) {
+                    console.log(res.data)
+                }
+            })
+        }
+        methods = {
+            useriphone(e){
+                this.useriphone = e.detail.value
+            },
+            userpassword(e){
+                this.userpassword = e.detail.value
+            },
+
+            getVerificationCode(){
+                if(validate.isEmpty(this.useriphone)){wx.showToast({title: '请输入手机号',duration: 1500});return ;}
+                if(!validate.isPhoneNum(this.useriphone)){wx.showToast({title: '请输入正确的手机号',duration: 1500});return ;}
+                this.getCode();
+                this.disabled = true
+            },
+            formSubmit(e) {
+                if(validate.isEmpty(this.useriphone)){wx.showToast({title: '请输入手机号',duration: 1500});return ;}
+                if(!validate.isPhoneNum(this.useriphone)){wx.showToast({title: '请输入正确的手机号',duration: 1500});return ;}
+                if(validate.isEmpty(this.userpassword)){wx.showToast({title: '请输入验证码',duration: 1500});return ;}
+                if(!this.checked){wx.showToast({title: '请同意使用协议',duration: 1500});return ;}
+                let data = e.detail.value;
+
+                wx.request({
+                    url: `${this.$parent.globalData.h5url}/wxzzj/wxsp_bind.do`,
+                    data: data,
+                    header: {
+                        'content-type': 'application/json', // 默认值
+                        'Cookie': 'JSESSIONID='+ wx.getStorageSync("sessionId")
+                    },
+                    success: (res) => {
+                        if(res.data.code === 100) {
+                            wx.showToast({ title: '绑定成功', duration: 1000 });
+                            setTimeout( () => {
+                                wx.switchTab({
+                                    url: "index"
+                                });
+                            },1000)
+                        } else {
+                            this.userpassword = ''
+                            wx.showToast({ title: '请输入正确的验证码', duration: 1000 });
+                        }
+                        console.log(res.data)
+                        this.$apply()
+                    }
+                })
+            },
+            checkboxChange(e) {
+                this.checked = this.checked ? false : true
+            },
+            goprotocol(){
+                wx.navigateTo({
+                    url:"protocol",
+                });
+            }
+        };
+
+        events = {};
+
+        onLoad(option) {
+            this.bindId = option.bindId;
+        }
+    }
+</script>
+
+
+
+

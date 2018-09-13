@@ -1,0 +1,112 @@
+<style lang="less">
+
+</style>
+
+<script>
+    import wepy from 'wepy'
+    import 'wepy-async-function'
+    import './utils/sdk/ald-stat'
+
+    export default class extends wepy.app {
+        config = {
+            pages: [
+                // 'pages/sign',
+                'pages/index',
+                'pages/expertDetails',
+                'pages/questionDetail',
+                'pages/zhuanjia',
+                'pages/me',
+                'pages/sign',
+                'pages/bphone',
+                'pages/questionlist',
+                'pages/protocol',
+                'pages/message',
+                'pages/topic',
+                'pages/topicDetails',
+                'pages/commentDetails',
+                'pages/fabuTopi',
+                'pages/textArea',
+                'pages/success',
+                'pages/myTopic',
+                'pages/zhushou',
+                'pages/station',
+            ],
+            window: {
+                backgroundTextStyle: 'light',
+                navigationBarBackgroundColor: '#fff',
+                navigationBarTitleText: '找植物专家',
+                navigationBarTextStyle: 'black'
+            },
+            "tabBar": {
+                "color": "#999",
+                "selectedColor": "#17cb30",
+                "backgroundColor": "#fff",
+                "borderStyle": "",
+                "list": [
+                    {
+                        "pagePath": "pages/index",
+                        "text": "首页",
+                        "iconPath": "./images/home3.png",
+                        "selectedIconPath": "./images/home2.png"
+                    },
+                    {
+                        "pagePath": "pages/topic",
+                        "text": "话题",
+                        "iconPath": "./images/topic2.png",
+                        "selectedIconPath": "./images/topic1.png"
+                    },
+                    {
+                        "pagePath": "pages/me",
+                        "text": "个人中心",
+                        "iconPath": "./images/me3.png",
+                        "selectedIconPath": "./images/me4.png"
+                    }
+                ]
+            }
+        }
+
+        globalData = {
+            userInfo: null,
+            api_host: 'https://wx.yzyy365.com/liteapp.html',
+            h5url: 'https://h5.yzyy365.com/',
+            // h5url: 'http://192.168.66.102:8080/grow-yzyy/',
+            img_host: 'https://file.yzyy365.com',
+            yunimg_host: 'https://h5.yzyy365.com/yunimg/'
+        }
+
+        constructor() {
+            super()
+            this.use('requestfix')
+        }
+
+        onLaunch() {
+            this.testAsync()
+        }
+
+        sleep(s) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve('promise resolved')
+                }, s * 1000)
+            })
+        }
+
+        async testAsync() {
+            const data = await this.sleep(3)
+            console.log(data)
+        }
+
+        getUserInfo(cb) {
+            const that = this
+            if (this.globalData.userInfo) {
+                return this.globalData.userInfo
+            }
+            wepy.getUserInfo({
+                success(res) {
+                    that.globalData.userInfo = res.userInfo
+                    cb && cb(res.userInfo)
+                }
+            })
+        }
+    }
+</script>

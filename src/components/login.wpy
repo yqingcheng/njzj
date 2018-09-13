@@ -1,0 +1,113 @@
+
+<style lang="scss">
+    .mask {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: #000;
+        z-index: 9000;
+        opacity: 0.7;
+    }
+    .modalDlg {
+        width: 567rpx;
+        position: fixed;
+        top: 65%;
+        left: 0;
+        z-index: 9999;
+        margin: -370rpx 85rpx;
+        background-color: #fff;
+        border-radius: 30rpx;
+        display: flex;
+        flex-direction: column;
+        font-size: 35rpx;
+        color: #474645;
+        overflow: hidden;
+        .title {
+            margin: 40rpx;
+            padding: 0 30rpx;
+            text-align: center;
+        }
+        .but {
+            width: 100%;
+            display: flex;
+            color: #999;
+            justify-content: space-between;
+            align-items: center;
+            view {
+                text-align: center;
+                flex: 0 0 50%;
+                border-top: 1px solid #eaeaea;
+                border-right: 1px solid #eaeaea;
+                margin-right: -1;
+                line-height: 90rpx;
+            }
+        }
+        button {
+            background: white;
+            font-size: 35rpx;
+            border: none;
+            padding: 0;
+            margin: 0;
+            display: inline;
+            color: #17cb30;
+            height: 100%;
+
+        }
+        button::after{
+            border: none;
+        }
+    }
+</style>
+
+<template>
+    <view class="login">
+        <view class="mask" wx:if="{{showModal}}"></view>
+        <view class="modalDlg" wx:if="{{showModal}}">
+            <view class="title">为了您更好的体验,请先同意授权登录</view>
+            <view class="but">
+                <view bindtap="jujue">拒绝</view>
+                <view @tap="ss">
+                    <button open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo">授权登录</button>
+                </view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+
+    import wepy from 'wepy'
+
+    export default class Login extends wepy.component{
+        data = {
+
+        }
+        props = {
+            showModal: {
+                type: [Boolean,String],
+                coerce: showModal => {
+                    return showModal
+                }
+            }
+
+        }
+        methods = {
+            ss() {
+                this.$emit('ss')
+            },
+            bindgetuserinfo(e) {
+                this.$emit('bindgetuserinfo',e)
+            },
+            jujue(){
+                this.$emit('jujue')
+            }
+        }
+        onLoad(){
+
+        }
+
+    }
+
+</script>

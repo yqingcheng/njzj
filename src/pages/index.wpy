@@ -1,0 +1,222 @@
+<style lang="scss">
+    page {
+        background: #eee;
+    }
+
+    .index {
+        .wrap1{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            z-index: 9;
+        }
+        .nav {
+            background: white;
+            padding: 30rpx 0;
+            display: flex;
+            justify-content: space-around;
+            font-size: 30rpx;
+            .list {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            image {
+                width: 56rpx;
+                height: 57rpx;
+                margin-bottom: 15rpx;
+            }
+        }
+        .secition {
+            padding: 30rpx 30rpx 0 30rpx;
+            .title {
+                font-family: "PingFangSC Medium";
+                color: #33485c;
+                font-size: 32rpx;
+                margin-bottom: 20rpx;
+                font-weight: 600;
+            }
+        }
+    }
+</style>
+<template>
+    <view class="index">
+        <login :showModal.sync="showModal"
+               @ss.user="ss"
+               @jujue.user="jujue"
+        ></login>
+        <view class="wrap1">
+            <search @search.user="search" @searchs.user="searchs"></search>
+            <view class="nav">
+                <view  @tap="navClickHander" class="list" wx:for="{{navList}}" data-index="{{item.questionType}}" wx:key="{{index}}">
+                    <image mode="scaleToFill" src="{{item.img}}"/>
+                    <view>{{item.text}}</view>
+                </view>
+            </view>
+        </view>
+        <view style="width: 100%;height: 230rpx;"></view>
+        <view class="secition">
+            <view class="title">推荐专家</view>
+            <expert :expertList.sync="expertList" @skipDetails.user="skipDetails"></expert>
+        </view>
+        <loading :loading.sync="loading" :more.sync="more"></loading>
+    </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import Search from '../components/search'
+  import Expert from '../components/expert'
+  import Loading from '../components/loading'
+  import Login from '../components/login'
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '农技专家',
+        enablePullDownRefresh: true,
+        backgroundTextStyle:"dark"
+    };
+    components = {
+      search: Search,
+      expert: Expert,
+        loading: Loading,
+        login: Login
+    };
+
+    data = {
+        showModal: false,
+      navList: [
+        {
+          text: '栽培',
+          img: '../images/nav1.png',
+            questionType: '栽培技术'
+        },{
+          text: '植保',
+          img: '../images/nav2.png',
+              questionType: '植保'
+        },{
+          text: '土肥',
+          img: '../images/nav3.png',
+              questionType: ' 土壤肥料'
+        },{
+          text: '品种',
+          img: '../images/nav4.png',
+              questionType: '品种选择'
+        }
+      ],
+        expertList: [],
+        totalPages: '',   //总页数
+        pageNo: '1' ,   //当前页数
+        loading: false,
+        more:false,
+    };
+    computed = {};
+
+    methods = {
+        ss() {
+            this.showModal = false
+        },
+        jujue() {
+            this.showModal = false
+        },
+      search(e) {
+          wx.navigateTo({url: `zhuanjia?keyword=${e.detail.value}`})
+      },
+        searchs(e) {
+          if(this.donghua1) {
+              this.donghua()
+          } else {
+              return
+          }
+      },
+
+      /*
+      * 点击专家列表 跳转到专家详情
+      * */
+      skipDetails(e) {
+        wx.navigateTo({
+          url: `expertDetails?id=${e.currentTarget.dataset.id}`
+        })
+      },
+        /*
+        * 专家的四个分类点击事件
+        * */
+      navClickHander(e) {
+          let questionType = e.currentTarget.dataset.index
+        wx.navigateTo({url: `zhuanjia?questionType=${questionType}`})
+      }
+    };
+    /*
+    * 上拉刷新
+    * */
+      onPullDownRefresh() {
+          this.pageNo = 1
+          this.expertList = []
+          this.expertLists();//重新加载产品信息
+          setTimeout(() => {
+              wx.stopPullDownRefresh();//停止当前页面下拉刷新。
+          }, 500)
+      }
+      /*
+      * 下拉触底
+      * */
+      onReachBottom() {
+          this.loading = true
+          if(this.pageNo*1+1 <= this.totalPages) {
+              this.pageNo ++
+              this.expertLists()
+          } else {
+              this.loading = false
+              this.more = true
+          }
+      }
+      /*
+      * 请求推荐专家列表
+      * */
+      expertLists() {
+          this.loading = true
+          wx.request({
+              url: `${this.$parent.globalData.h5url}/zzj/search/expert.do`,
+              data: {
+                  pageNo: this.pageNo,
+                  pageSize: 20
+              },
+              header: {
+                  'content-type': 'application/json'
+              },
+              success: (res) => {
+                  res.data.data.queryList.forEach( item => {
+                      this.expertList.push({
+                          img: `${this.$parent.globalData.img_host}${item.headImg}`,
+                          name: item.name,
+                          text: item.professional,
+                          a: '特约',
+                          address: item.company,
+                          ling: item.allSpecies,
+                          uuid: item.uuid
+                      })
+                  })
+                  this.totalPages = res.data.data.totalPages
+
+                  this.$apply()
+              }
+          })
+      }
+      events = {
+          bindgetuserinfo(e) {
+              this.showModal = false
+              if(e.detail.errMsg === 'getUserInfo:ok') {
+                  wx.setStorageSync("user", e.detail);
+              }
+          }
+      }
+    onLoad() {
+        this.expertLists()
+        if(!wx.getStorageSync("user").userInfo) {
+            this.showModal = true
+        }
+    }
+      onShareAppMessage() {}
+  }
+</script>

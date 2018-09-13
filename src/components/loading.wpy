@@ -1,0 +1,59 @@
+<style lang="scss">
+    .tips{
+        font-size:30rpx;
+        /*margin-bottom:87rpx;*/
+        padding: 10rpx 0;
+        image{
+            width:18px;height:18px; margin-right: 20rpx
+        }
+        view{
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+    }
+</style>
+
+<template>
+    <view class="tips">
+        <view wx:if="{{loading}}">
+            <image src="http://h5.yzyy365.com/images/common/loading.gif" mode="aspectFill"/>
+            玩了命的加载中...
+        </view>
+        <view wx:if="{{more}}"><text>没有更多内容了</text></view>
+    </view>
+</template>
+
+<script>
+
+    import wepy from 'wepy'
+
+    export default class Loading extends wepy.component{
+        data = {
+
+        }
+        props = {
+            loading: {
+                type: Boolean,
+                coerce: function (res){
+                    return res
+                },
+                default: {}
+            },
+            more: {
+                type: Boolean,
+                coerce: function (res){
+                    return res
+                },
+                default: {}
+            }
+        }
+        methods = {
+
+        }
+        onLoad(){
+
+        }
+
+    }
+</script>

@@ -1,0 +1,43 @@
+<style lang="scss">
+    .love{
+        width: 50rpx;
+        height: 50rpx;
+        position: fixed;
+        top: -100rpx;
+        z-index: 9999;
+    }
+</style>
+
+<template>
+    <view class="donghua">
+        <repeat for="{{imge}}" key="{{index}}">
+            <image animation="{{item.animationData1}}" data-idx="{{index}}"
+                   class='love'
+                   src='{{item.img}}'/>
+        </repeat>
+    </view>
+</template>
+
+<script>
+
+    import wepy from 'wepy'
+
+    export default class Donghua extends wepy.component {
+        data = {}
+        props = {
+            imge: {
+                type: [Object],
+                coerce: imge => {
+                    return imge
+                }
+            }
+        }
+        methods = {}
+
+        onLoad() {
+
+        }
+
+    }
+
+</script>

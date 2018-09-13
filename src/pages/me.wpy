@@ -1,0 +1,290 @@
+
+
+<style lang="scss">
+    page {
+        background: #f5f5f5;
+        font-size: 30rpx;
+    }
+    .me {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background-color: #F4F3F3;
+        color: #939393;
+        overflow: hidden;
+    }
+    .myuser {
+        width: 100%;
+        padding-top: 1.5em;
+        background: #fff;
+        margin-bottom: .5em;
+    }
+    .mypic {
+        width: 6em;
+        height: 6em;
+        margin: 0 auto;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    .mypic image {
+        width: 100%;
+        height: 100%;
+    }
+    .myname {
+        width: 100%;
+        margin-top: .5em;
+        text-align: center;
+        font-size: 1.3em;
+        padding-bottom: 1.5em;
+    }
+    .myhref {
+        font-family: "PingFangSC Regular";
+        border-bottom: 1px solid #eee;
+        color: #34495e;
+        background: #fff;
+        line-height: 30rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 30rpx;
+        padding: 20rpx 30rpx;
+        box-sizing: border-box;
+        &_l {
+            display: flex;
+            align-items: center;
+            image{
+                width: 48rpx;
+                height: 48rpx;
+                display: block;
+            }
+            view:nth-child(2) {
+                margin-left: 26rpx;
+            }
+        }
+        &_r{
+            image {
+                width: 30rpx;
+                height: 30rpx;
+                display: block;
+            }
+        }
+
+    }
+    button::after {
+        border: none;
+    }
+    .myname button {
+        background: white;
+    }
+</style>
+
+<template>
+    <view class="me">
+        <view class="myuser">
+            <!--<view class="mypic">-->
+                <!--<image src="{{userpic}}" />-->
+            <!--</view>-->
+            <view class="mypic">
+                <button style="width: 100%;height: 100%;padding: 0"
+                        open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo">
+                    <image src="{{userpic}}"></image>
+                </button>
+            </view>
+            <view class="myname">
+                <button open-type="getUserInfo" bindgetuserinfo="bindgetuserinfo">{{username}}</button>
+            </view>
+        </view>
+        <view class="myhref" @tap="skipQuestionlist">
+            <view class="myhref_l">
+                <image mode="scaleToFill" src="https://h5.yzyy365.com/yunimg/goac.png" />
+                <view class="myhref_c">我的提问</view>
+            </view>
+            <view class="myhref_r">
+                <image src="https://h5.yzyy365.com/yunimg/r.png" />
+            </view>
+        </view>
+        <!--<view class="myhref" @tap="myTopic">-->
+            <!--<view class="myhref_l">-->
+                <!--<image mode="scaleToFill" src="../images/topic5.png" />-->
+                <!--<view class="myhref_c">我的话题</view>-->
+            <!--</view>-->
+            <!--<view class="myhref_r">-->
+                <!--<image src="https://h5.yzyy365.com/yunimg/r.png" />-->
+            <!--</view>-->
+        <!--</view>-->
+        <button open-type="contact" class="myhref">
+                <view class="myhref_l">
+                    <image src="../images/kefu.png"/>
+                    <view class="myhref_c">联系我们</view>
+                </view>
+
+                <view class="myhref_r">
+                    <image src="https://h5.yzyy365.com/yunimg/r.png"/>
+                </view>
+         </button>
+        <view class="myhref" @tap="yaoZhoushou">
+            <view class="myhref_l">
+                <image mode="scaleToFill" src="../images/yao.png" />
+                <view class="myhref_c">农药计算器</view>
+            </view>
+            <view class="myhref_r">
+                <image src="https://h5.yzyy365.com/yunimg/r.png" />
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+    var imgurl = "https://h5.yzyy365.com/yunimg/"
+    import API from '../mixins/api'
+    import wepy from 'wepy';
+    export default class Me extends wepy.page {
+        config = {
+            navigationBarTitleText: '个人中心'
+        };
+        components = {};
+        data = {
+            userpic: imgurl + "1.png",
+            username: '点击登录',
+            imgurl: imgurl
+        };
+        /*
+        * 登录状态判断
+        * */
+        commons(succ){
+            API.API.checkuserStatus(this, (res) => {
+                if(res.data.code === 100 && wx.getStorageSync("uuid")){
+                    wx.hideLoading()
+                    succ()
+                }else if(res.data.code === 102) {
+                    wx.getUserInfo({
+                        success: res => {
+                            wx.setStorageSync("user", res);
+                            API.API.getSessionId(this, () => {
+                                this.commons(() => {
+                                    wx.navigateTo({
+                                        url: `questionlist`
+                                    })
+                                })
+                            })
+                        }
+                    })
+
+                } else {
+                    API.API.getBind(this, (res) => {
+                        wx.setStorageSync("uuid", res.data.data.uuid)
+                        wx.hideLoading()
+                        succ()
+                    })
+                }
+            })
+        }
+        methods = {
+            /*
+            * 我的提问
+            * */
+            skipQuestionlist(e) {
+                // 先判断是否登录
+                if (wx.getStorageSync("user").userInfo) {
+                    wx.showLoading({
+                        title: '加载中',
+                    })
+                    if (wx.getStorageSync("sessionId")) {
+                        this.commons(() => {
+                            wx.navigateTo({
+                                url: `questionlist`
+                            })
+                        })
+                    } else {
+                        API.API.getSessionId(this, () => {
+                            this.commons(() => {
+                                wx.navigateTo({
+                                    url: `questionlist`
+                                })
+                            })
+                        })
+                    }
+                } else {
+                    wx.showToast({
+                        title: '您还没有登录',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+            },
+            /*
+            * 授权登录按钮
+            * */
+            bindgetuserinfo(e) {
+                if(e.detail.userInfo) {
+                    wx.setStorageSync("user", e.detail);
+                    this.username = e.detail.userInfo.nickName
+                    this.userpic = e.detail.userInfo.avatarUrl
+                    // 先判断是否登录
+                    if (wx.getStorageSync("user")) {
+                        if (wx.getStorageSync("sessionId")) {
+                            API.API.checkuserStatus(this, () => {
+                                API.API.getBind(this, (res) => {
+                                    wx.setStorageSync("uuid", res.data.data.uuid)
+                                })
+                            })
+                        } else {
+                            API.API.getSessionId(this, () => {
+                                API.API.checkuserStatus(this, () => {
+                                    API.API.getBind(this, (res) => {
+                                        wx.setStorageSync("uuid", res.data.data.uuid)
+                                    })
+                                })
+                            })
+                        }
+                    }
+                } else {
+                    return
+                }
+
+            },
+            /*
+            * 我的话题
+            * */
+            myTopic(){
+                // 先判断是否登录
+                if (wx.getStorageSync("user").userInfo) {
+                    wx.showLoading({
+                        title: '加载中',
+                    })
+                    if (wx.getStorageSync("sessionId")) {
+                        this.commons(() => {
+                            wx.navigateTo({url: 'myTopic'})
+                        })
+                    } else {
+                        API.API.getSessionId(this, () => {
+                            this.commons(() => {
+                                wx.navigateTo({url: 'myTopic'})
+                            })
+                        })
+                    }
+                } else {
+                    wx.showToast({
+                        title: '您还没有登录',
+                        icon: 'none',
+                        duration: 2000
+                    })
+                }
+            },
+            /*
+            * 农药剂量助手
+            * */
+            yaoZhoushou() {
+                wx.navigateTo({url: 'zhushou'})
+            }
+        };
+        onShow() {
+            if (wx.getStorageSync("user").userInfo) {
+                let user = wx.getStorageSync("user")
+                this.username = user.userInfo.nickName
+                this.userpic = user.userInfo.avatarUrl
+            }
+        }
+        onShareAppMessage() {}
+    }
+</script>

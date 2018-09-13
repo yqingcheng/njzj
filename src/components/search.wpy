@@ -1,0 +1,63 @@
+
+<style lang="scss">
+    .bgf {
+        background: white;
+    }
+    .search {
+        width: 700rpx;
+        height: 60rpx;
+        border-radius: 60rpx;
+        background: #eee;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        padding: 0 30rpx;
+        box-sizing: border-box;
+        image {
+            width: 30rpx;
+            display: inline-block;
+        }
+        input {
+            font-size: 24rpx;
+            margin-left: 20rpx;
+            width: 100%;
+        }
+    }
+</style>
+
+<template>
+        <view class="bgf">
+
+            <view class="search">
+                <image mode="widthFix" @tap="searchs" src="../images/search.png"></image>
+                <input value="{{keyword}}" bindconfirm="search" type="text" placeholder="请输入专家姓名/单位/职称"></input>
+            </view>
+        </view>
+</template>
+
+<script>
+
+  import wepy from 'wepy'
+
+  export default class Search extends wepy.component{
+    data = {
+
+    }
+    props = {
+        keyword: {}
+    }
+    methods = {
+      search(e) {
+        this.$emit('search',e)
+      },
+        searchs(e) {
+            this.$emit('searchs',e)
+        }
+    }
+    onLoad(){
+
+    }
+
+  }
+
+</script>

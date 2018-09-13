@@ -1,0 +1,165 @@
+<style lang="scss">
+	page {
+		background: #ffffff;
+		font-size: 30rpx;
+	}
+	.problem {
+		border-top: 1px solid #eee;
+	}
+	/*总体主盒子*/
+	.container {
+		width: 100%;
+		background-color: #fff;
+		color: #939393;
+	}
+	.q_list {
+		width: 90%;
+		padding-left: 5%;
+		padding-right: 5%;
+		border-bottom: 1px solid #f4f4f4;
+	}
+	.q_list .q_list_t {
+		width: 100%;
+		font-size: 1.2em;
+		color: #000;
+		height: 2.5em;
+		line-height: 2.5em;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.q_list_b {
+		width: 100%;
+		height: 2.5em;
+		line-height: 2.5em;
+		font-size: 1em;
+	}
+	.b_left {
+		width: 50%;
+		display: inline-block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.b_right {
+		width: 50%;
+		display: inline-block;
+		text-align: right;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.list_no {
+		width: 90%;
+		padding-left: 5%;
+		padding-right: 5%;
+	}
+	.list_no .list_img {
+		width: 70%;
+		height: 5em;
+		margin: 0 auto;
+	}
+	.list_no .list_img image {
+		width: 100%;
+	}
+</style>
+
+<template>
+	<view>
+		<!--主盒子-->
+		<view class="container">
+			<view class="problem"></view>
+			<navigator url="message?quuid={{itemName.uuid}}" class="q_list" wx:for="{{questions}}" wx:for-index="id" wx:for-item="itemName" wx:key="id">
+				<view class="q_list_t">{{itemName.title}}</view>
+				<view class="q_list_b">
+					<view class="b_left">物种:{{itemName.specie}}</view>
+					<view class="b_right">{{itemName.createTime}}</view>
+				</view>
+			</navigator>
+			<view class="list_no" wx:if="{{active}}">
+				<view class="list_img">
+					<image src="https://h5.yzyy365.com/yunimg/nono.png" />
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import wepy from 'wepy';
+	var formatdate = require("../mixins/util").formatDate;
+	export default class Questionlist extends wepy.page {
+		config = {
+			navigationBarTitleText: '我的提问'
+		};
+		components = {};
+		data = {
+			index: 0,
+			questions: [],
+			havenext: true,
+			active: false
+		};
+		computed = {};
+		methods = {};
+		onReachBottom() {
+			//页面上拉触底事件的处理函数
+			if (this.havenext) {
+				this.loadMore();
+			} else {
+                wx.showToast({
+                    title: '没有更多了',
+                    icon: "none"
+                })
+            }
+		}
+		loadMore() {
+			let pageNo = this.index + 1;
+			let user = wx.getStorageSync("user")
+			if (user == null || user == "") {
+				this.active = true
+				return;
+			}
+			let uuid = wx.getStorageSync("uuid")
+			wx.request({
+				url: `${this.$parent.globalData.h5url}/zzj/myQuestion.do`,
+				data: {
+					pageNo: pageNo,
+					uuid: uuid
+				},
+				// method: 'post',
+				header: {
+					'content-type': 'application/json'
+				},
+				success: (res) => {
+					if (res.data.code == 100) {
+						let questions = res.data.data.pageData;
+						let qlist = questions.pageDatas
+						let curqlist = this.questions;
+						if (qlist.length > 0) {
+							for (var i = 0; i < qlist.length; i++) {
+								qlist[i].createTime = formatdate(new Date(qlist[i].createTime), "yyyy-MM-dd");
+								curqlist.push(qlist[i]);
+							}
+						} else {
+                            this.active = true
+                        }
+						this.questions = curqlist
+							this.index = questions.pageIndex
+							this.havenext = questions.isHaveNextPage
+					} else {
+						this.active = true
+					}
+					this.$apply()
+				},
+				fail: () => {
+					this.active = true
+                    this.$apply()
+				}
+			})
+		}
+		onLoad() {
+			this.loadMore();
+		}
+        onShareAppMessage() {}
+	}
+</script>

@@ -1,0 +1,46 @@
+<style lang="scss">
+    page{
+        height: 100%;
+    }
+
+</style>
+
+<template>
+    <view class="success">
+        1
+    </view>
+
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class Success extends wepy.page {
+        config = {
+            navigationBarTitleText: '发布成功'
+        };
+        components = {
+
+        };
+
+        data = {
+
+        };
+
+        computed = {};
+
+        methods = {
+
+        };
+
+        events = {};
+
+        onLoad(options) {
+
+        }
+    }
+</script>
+
+
+
+

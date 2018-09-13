@@ -1,0 +1,295 @@
+<style lang="scss">
+    page{
+        height: 100%;
+    }
+    .topic_details{
+        padding-bottom: 100rpx;
+        .con{
+            padding: 0 30rpx 10rpx 30rpx;
+            border-bottom: 10rpx solid #eee;
+        }
+        .name{
+            font-size: 32rpx;
+            color: #33485c;
+            line-height: 47rpx;
+            font-family: "PingFangSC Medium";
+        }
+        .header{
+            display: flex;
+            justify-content: space-between;
+            padding:16rpx 0;
+            align-items: center;
+            .people{
+                display: flex;
+                align-items: center;
+                font-size: 28rpx;
+                font-family: "PingFangSC light";
+                color: #33485c;
+                image{
+                    width: 78rpx;
+                    height: 78rpx;
+                    border-radius: 50%;
+                    border: 1px solid #eee;
+                    margin-right: 20rpx;
+                }
+            }
+            .guanzhu{
+                font-family: "PingFangSC Medium";
+                font-size: 22rpx;
+                color: #FFA200;
+                width: 103rpx;
+                height: 40rpx;
+                line-height: 40rpx;
+                text-align: center;
+                border: 1px solid #FFA200;
+                border-radius: 10rpx;
+            }
+            .yiguanzhu{
+                font-family: "PingFangSC Medium";
+                font-size: 22rpx;
+                color: #636363;
+                width: 103rpx;
+                height: 40rpx;
+                line-height: 40rpx;
+                text-align: center;
+                border: 1px solid #636363;
+                border-radius: 10rpx;
+            }
+        }
+        .footer{
+            display: flex;
+            font-family: "PingFangSC light";
+            font-size: 24rpx;
+            align-items: center;
+            color: #999;
+
+            view{
+                margin-right: 10rpx;
+            }
+            view:nth-child(1){
+                color: #2ecc87;
+                font-size: 16rpx;
+                width: 52rpx;
+                height: 24rpx;
+                line-height: 24rpx;
+                text-align: center;
+                border-radius: 3rpx;
+                border: 1px solid #2ecc87;
+            }
+        }
+        .content{
+            font-size: 28rpx;
+            line-height: 45rpx;
+            font-family: "PingFangSC light";
+            color: #33485c;
+            padding: 15rpx 0;
+        }
+        .comment{
+            .title{
+                display: flex;
+                font-family: "PingFangSC Medium";
+                color: #33485c;
+                font-size: 28rpx;
+                line-height: 70rpx;
+                padding: 0 30rpx;
+                align-items: center;
+                view:nth-child(1){
+                    background:#009900;
+                    width:6rpx;
+                    height:30rpx;
+                    margin-right:12rpx;
+                }
+                border-bottom: 1px solid #eee;
+            }
+            &_list{
+                padding:0 30rpx;
+                .people{
+                    display: flex;
+                    font-size: 28rpx;
+                    font-family: "PingFangSC light";
+                    color: #33485c;
+                    padding: 22rpx 0;
+                    overflow: hidden;
+                    border-bottom: 1px solid #eee;
+                    .imae{
+                        flex:0 0 78rpx;
+                        height: 78rpx;
+                        border-radius: 50%;
+                        border: 1px solid #eee;
+                        margin-right: 15rpx;
+                    }
+                    .conn{
+                        .names{
+                            line-height: 60rpx;
+                        }
+                        .pinglun{
+                            overflow:hidden;
+                            text-overflow:ellipsis;
+                            display:-webkit-box;
+                            -webkit-box-orient:vertical;
+                            -webkit-line-clamp:3;
+                        }
+                        .zan{
+                            display: flex;
+                            font-size: 24rpx;
+                            width: 100%;
+                            padding: 22rpx 0 0 0;
+                            color: #999;
+                            font-family: "PingFangSC light";
+                            flex-direction: row-reverse;
+                            view{
+                                margin-left: 30rpx;
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+        .dilan{
+            height: 98rpx;
+            position: fixed;
+            align-items: center;
+            justify-content: space-between;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            border-top: 1px solid #eee;
+            background: white;
+            padding: 0 60rpx 0 30rpx;
+            box-sizing: border-box;
+            width: 100%;
+            image{
+                width: 41rpx;
+                height: 41rpx;
+            }
+            input{
+                color: #33485c;
+                font-family: "PingFangSC light";
+                font-size: 28rpx;
+                width: 460rpx;
+                line-height: 66rpx;
+                box-sizing: border-box;
+                padding-left: 25rpx;
+                background: #eee;
+                border-radius: 30rpx;
+            }
+        }
+    }
+</style>
+
+<template>
+    <view class="topic_details">
+        <view class="con">
+            <view class="name">#一篇文章告诉你未来农业各环节的机会一篇文章告诉你未来农业各环节的机会#</view>
+            <view class="header">
+                <view class="people">
+                    <image src="{{qitem.img}}" />
+                    <view>{{qitem.name}}</view>
+                </view>
+                <view wx:if="{{qitem.status === 1}}" class="guanzhu">+关注</view>
+                <view wx:if="{{qitem.status === 2}}" class="yiguanzhu">v已关注</view>
+            </view>
+            <view class="footer">
+                <view>{{qitem.suv}}</view>
+                <view>{{qitem.datat}}</view>
+                <view>{{qitem.time}}</view>
+                <view>浏览{{qitem.num1}}</view>
+            </view>
+            <view class="content">
+                　　乱起收到货方式覅uewfhsjhfwiuehfuiwhfsdhf涉及到合肥会计师四大皆空后发
+                色凤凰网科技而烦恼山东矿机划分为发违法看见
+            </view>
+        </view>
+
+        <view class="comment">
+            <view class="title">
+                <view></view>
+                <view>5条评论</view>
+            </view>
+
+            <repeat for="{{commentList}}" key="{{index}}">
+                <view class="comment_list" @tap="skipCommentDetails">
+                    <view class="people">
+                        <image class="imae" src="{{item.img}}"/>
+                        <view class="conn">
+                            <view class="names">{{item.name}}</view>
+                            <view class="pinglun">{{item.text}}</view>
+                            <view class="zan">
+                                <view>{{item.huifu}}条回复</view>
+                                <view>{{item.zan}}点赞</view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </repeat>
+        </view>
+
+        <view class="dilan">
+            <input type="text" placeholder="写评论..."/>
+            <image src="../images/zan2.png"/>
+            <image src="../images/fenxiang.png"/>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class TopicDetails extends wepy.page {
+        config = {
+            navigationBarTitleText: '话题详情'
+        };
+        components = {};
+        data = {
+            qitem: {
+                img: '../images/me3.png',
+                name: '王教授',
+                status: 1,
+                suv: '种植',
+                datat: '2018-07-22',
+                time: '14:00',
+                num1: '999'
+            },
+            commentList: [
+                {
+                    img: '../images/me3.png',
+                    name: '王教授',
+                    text: '你师弟是的呢不问你斯诺克的积分一为你服务呢发in牛市的那份文牛而烦恼未付文峰你问服务牛而非',
+                    zan: 20,
+                    huifu: 30
+                },
+                {
+                    img: '../images/me3.png',
+                    name: '王麻子',
+                    text: '你师弟是的呢不弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分问你斯诺克的积分一为你服务呢发in牛市的那份文牛而烦恼未付文峰你问服务牛而非',
+                    zan: 20,
+                    huifu: 30
+                },{
+                    img: '../images/me3.png',
+                    name: '王麻子',
+                    text: '你师弟是的呢不弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分问你斯诺克的积分一为你服务呢发in牛市的那份文牛而烦恼未付文峰你问服务牛而非',
+                    zan: 20,
+                    huifu: 30
+                },{
+                    img: '../images/me3.png',
+                    name: '王麻子',
+                    text: '你师弟是的呢不弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分弟是的呢不问你斯诺克的积分问你斯诺克的积分一为你服务呢发in牛市的那份文牛而烦恼未付文峰你问服务牛而非',
+                    zan: 20,
+                    huifu: 30
+                },
+            ]
+        };
+        computed = {};
+        methods = {
+            skipCommentDetails(){
+                wx.navigateTo({url: 'commentDetails'})
+            }
+        };
+        events = {};
+        onLoad(options) {
+
+        }
+        onShareAppMessage() {}
+    }
+</script>

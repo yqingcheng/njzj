@@ -1,0 +1,454 @@
+<!----------------------------农机小站-------------------------------->
+<style lang="scss">
+    page{
+        height: 100%;
+        background: #eee;
+    }
+    .station{
+        .header{
+            height: 474rpx;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            image{
+                width: 120rpx;
+                height: 120rpx;
+                border-radius: 50%;
+                margin: 60rpx 0 22rpx 0;
+                display: block;
+                background: white;
+            }
+            .cheng{
+                font-size: 22rpx;
+                color: #fefefe;
+                font-family: "PingFangSC Medium";
+            }
+            .cheng1{
+                font-size: 22rpx;
+                color: #2cd088;
+                font-family: "PingFangSC Medium";
+                line-height: 80rpx;
+            }
+            .address{
+                font-size: 22rpx;
+                color: #ffffff;
+                font-family: "PingFangSC Medium";
+            }
+            .nav{
+                font-family: "PingFangSC light";
+                width: 100vw;
+                height: 88rpx;
+                background: rgba(0,0,0,.5);
+                font-size: 26rpx;
+                color: #fff;
+                position: absolute;
+                bottom: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .blo{
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    height: 40rpx;
+                    align-items: center;
+                    justify-content: center;
+                    border-left: 1px solid #fff;
+                    margin-left: -1px;
+                    view{
+                        width: 100%;
+                        text-align: center;
+                    }
+
+                }
+            }
+        }
+        .lis{
+            display: flex;
+            height: 88rpx;
+            align-items: center;
+            font-size: 26rpx;
+            color: #33485c;
+            background: white;
+            border-bottom: 1px solid #ccc;
+            font-family: "PingFangSC Regular";
+            view{
+                margin-left: 48rpx;
+                border-bottom: 5rpx solid #2cd088;
+                height: 100%;
+                line-height: 88rpx;
+            }
+        }
+        .contion{
+            background: white;
+            &_list{
+                padding: 30rpx 30rpx 0 30rpx;
+                border-bottom: 6px solid #eee;
+                .hheader{
+                    display: flex;
+                    align-items: center;
+                    .headername{
+                        border: 1px solid #ccc;
+                        border-radius: 50%;
+                        width: 78rpx;
+                        height: 78rpx;
+                        margin-right: 15rpx;
+                    }
+                    .name{
+                        font-family: "PingFangSC light";
+                        view:nth-child(1){
+                            font-size: 28rpx;
+                            color: #33485c;
+                        }
+                        view:nth-child(2){
+                            font-size: 24rpx;
+                            color: #979DA4;
+                        }
+                    }
+                }
+                .title{
+                    font-size: 30rpx;
+                    color: #33485c;
+                    font-family: "PingFangSC Regular";
+                    margin: 20rpx 0 28rpx 0;
+                }
+                .imgs{
+                    display: flex;
+                    flex-flow: row wrap;
+                    view{
+                        width: 32%;
+                        margin-right: 2%;
+                        margin-top: 10rpx;
+                        height: 131rpx;
+                        background: no-repeat;
+                        background-position: center;
+                        background-size: cover;
+                    }
+                    view:nth-child(3n){
+                        margin-right: 0;
+                    }
+                }
+                .navs{
+                    display: flex;
+                    font-family: "PingFangSC light";
+                    border-bottom: 1px solid #eee;
+                    font-size: 24rpx;
+                    padding: 20rpx 0 30rpx 0;
+                    view:nth-child(1){
+                        color: indianred;
+                        line-height: 24rpx;
+                        text-align: center;
+                        margin-right: 15rpx;
+                        border: 1px solid indianred;
+                    }
+                    image{
+                        width: 53rpx;
+                        height: 24rpx;
+                        margin-right: 15rpx;
+                    }
+                    view:nth-child(2){
+                        color: #999;
+                        line-height: 24rpx;
+                    }
+                }
+                .foote{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    height: 70rpx;
+                    image{
+                        width: 28rpx;
+                        height: 26rpx;
+                        margin-right: 10rpx;
+                    }
+                    &_li{
+                        display: flex;
+                        font-family: "PingFangSC light";
+                        font-size: 24rpx;
+                        color: #393939;
+                        justify-content: center;
+                        align-items: center;
+                        flex: 1;
+                    }
+                }
+            }
+
+        }
+        .footer{
+            position: fixed;
+            border-top: 1px solid #eee;
+            bottom: 0;
+            left: 0;
+            height: 82rpx;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background: white;
+            &_li{
+                display: flex;
+                height: 38rpx;
+                border-right: 1px solid #ddd;
+                margin-right: -1px;
+                font-family: "PingFangSC light";
+                font-size: 24rpx;
+                color: #34495e;
+                justify-content: center;
+                align-items: center;
+                flex: 1;
+                image{
+                    width: 32rpx;
+                    height: 28rpx;
+                    margin-right: 10rpx;
+                }
+            }
+        }
+    }
+</style>
+
+<template>
+    <view class="station">
+        <donghua :imge.sync="imge"></donghua>
+        <view class="header" style="background-image: url('https://file.yzyy365.com/images/yunlite/e2cce7f8638fe7062c1f71825428ab45.png')">
+            <image src="../images/kefu.png"/>
+            <view class="cheng">省级专家</view>
+            <view class="cheng1">高级农艺师</view>
+            <view class="address">泰兰县农技推广中心站</view>
+            <view class="nav">
+                <view class="blo">
+                    <view>298</view>
+                    <view>问候</view>
+                </view>
+                <view class="blo">
+                    <view>298</view>
+                    <view>访问</view>
+                </view>
+                <view class="blo">
+                    <view>298</view>
+                    <view>粉丝</view>
+                </view>
+                <view class="blo">
+                    <view>298</view>
+                    <view>动态</view>
+                </view>
+            </view>
+        </view>
+
+        <view class="lis">
+            <view>文章</view>
+            <view>动态</view>
+        </view>
+
+        <view class="contion">
+            <repeat for="{{contionList}}" key="{{index}}">
+                <view class="contion_list">
+                    <view class="hheader">
+                        <image class="headername" src="{{item.headerimg}}"/>
+                        <view class="name">
+                            <view>{{item.name}}</view>
+                            <view>{{item.time}}</view>
+                        </view>
+                    </view>
+                    <view class="title">{{item.title}}</view>
+                    <view class="imgs" >
+                        <repeat for="{{item.imgs}}" wx:for-item="iet" key="{{index}}">
+                            <view style="background-image: url('{{item}}')"></view>
+                        </repeat>
+                    </view>
+                    <view class="navs">
+                        <image src="../images/san.png"/>
+                        <view>阅读2345</view>
+                    </view>
+                    <view class="foote">
+                        <view class="foote_li">
+                            <image src="../images/fenxiang.png"/>
+                            <view>{{item.num1}}</view>
+                        </view>
+                        <view class="foote_li">
+                            <image src="../images/pinglun.png"/>
+                            <view>{{item.num2}}</view>
+                        </view>
+                        <view class="foote_li">
+                            <image src="../images/zan.png"/>
+                            <view>{{item.num3}}</view>
+                        </view>
+                    </view>
+                </view>
+            </repeat>
+        </view>
+
+        <view style="height: 82rpx;width: 100vw"></view>
+        <view class="footer">
+            <view class="footer_li">
+                <image src="../images/home5.png"/>
+                <view>首页</view>
+            </view>
+            <view class="footer_li">
+                <image src="../images/liuyan5.png"/>
+                <view>留言</view>
+            </view>
+            <view class="footer_li">
+                <image src="../images/tiwen5.png"/>
+                <view>提问</view>
+            </view>
+            <view class="footer_li" @tap="wenhou">
+                <image src="../images/wenhou5.png"/>
+                <view>问候</view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import Donghua from '../components/donghua'
+
+    let animation = wx.createAnimation({})
+    let i = 0 ;
+
+    export default class Station extends wepy.page {
+        config = {
+            navigationBarTitleText: '农机小站'
+        };
+        components = {
+            donghua: Donghua
+        };
+
+        data = {
+            screenHeight: '',
+            name: '乔东',
+            contionList: [
+                {
+                    headerimg: '../images/home1.png',
+                    name: '我是专家',
+                    time: '2028/6/12 12:23',
+                    title: '一篇文章告诉你未来农业各环节的机会',
+                    num1: 2344,
+                    num2: 2344,
+                    num3: 2344,
+                    imgs: [
+                        '../images/home5.png',
+                        '../images/home5.png',
+                        '../images/home5.png'
+                    ]
+                },{
+                    headerimg: '../images/home1.png',
+                    name: '我是专家',
+                    time: '2028/6/12 12:23',
+                    title: '一篇文章告诉你未来农业各环节的机会',
+                    num1: 2344,
+                    num2: 2344,
+                    num3: 2344
+                },
+            ],
+            animationData: {},
+            donghua1: true,
+            imge:[
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/8@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/8@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/9@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/9@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/1@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/2@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/3@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/1@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/3@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/4@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/4@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/6@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/1@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/6@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/2@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/4@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/4@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/5@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/5@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/3@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/3@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/5@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/5@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/6@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/6@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/11@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/11@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/7@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/7@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/8@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/8@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/9@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/9@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/11@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/2@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/10@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/7@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/7@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/10@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/10@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/11@2x.png',animationData1:{}},
+                {left1: Math.floor(Math.random() * 374 + 1),img:'../images/anima/11@2x.png',animationData1:{}},
+            ]
+        };
+
+        computed = {};
+
+        donghua() {
+            this.donghua1 = false
+            animation = wx.createAnimation({})
+            setTimeout(() => {
+                animation.translateY(this.screenHeight).left(Math.floor(Math.random() * 305 + 1)).step({ duration: 3000 })
+                this.imge[i].animationData1= animation.export()
+                this.$apply()
+                i++;
+            }, 0)
+            if (i < this.imge.length-1) {
+                setTimeout(() => {
+                    this.donghua()
+                }, 50)
+            } else {
+                setTimeout(() => {
+                    i = 0
+                    this.init();
+                }, 3000)
+            }
+        }
+        init() {
+            this.donghua1 = true
+            for (var j=0 ;j <= this.imge.length-1; j++ ){
+                animation.translateY(0).left(this.imge[j].left1).step({ duration: 0 })
+                this.imge[j].animationData1= animation.export()
+            }
+        }
+        methods = {
+            wenhou() {
+                if(this.donghua1) {
+                    this.donghua()
+                } else {
+                    return
+                }
+            }
+        };
+        onShow() {
+            this.init()
+            wx.getSystemInfo({
+                success:(res) => {
+                    this.screenHeight = res.screenHeight
+                }
+            })
+        }
+        events = {};
+
+        onLoad(options) {
+            wx.setNavigationBarTitle({
+                title: this.name+'的农技小站'//页面标题为路由参数
+            })
+        }
+    }
+</script>
+
+
+
+

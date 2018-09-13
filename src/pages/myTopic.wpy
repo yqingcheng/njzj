@@ -1,0 +1,192 @@
+<style lang="scss">
+    page{
+        height: 100%;
+    }
+    .my_topic{
+        padding: 0 30rpx;
+        border-top: 1px solid #eee;
+        .header{
+            padding:16rpx 0;
+            .people{
+                display: flex;
+                align-items: center;
+                font-size: 28rpx;
+                font-family: "PingFangSC light";
+                color: #33485c;
+                image{
+                    width: 78rpx;
+                    height: 78rpx;
+                    border-radius: 50%;
+                    border: 1px solid #eee;
+                    margin-right: 20rpx;
+                }
+            }
+            .guanzhu{
+                font-family: "PingFangSC Medium";
+                font-size: 22rpx;
+                color: #FFA200;
+                width: 103rpx;
+                height: 40rpx;
+                line-height: 40rpx;
+                text-align: center;
+                border: 1px solid #FFA200;
+                border-radius: 10rpx;
+            }
+            .yiguanzhu{
+                font-family: "PingFangSC Medium";
+                font-size: 22rpx;
+                color: #636363;
+                width: 110rpx;
+                height: 40rpx;
+                line-height: 40rpx;
+                text-align: center;
+                border: 1px solid #636363;
+                border-radius: 10rpx;
+            }
+        }
+        .secition{
+            .text{
+                font-family: "PingFangSC Regular";
+                color: #33485c;
+                font-size: 30rpx;
+                margin-bottom: 25rpx;
+            }
+            image{
+                width: 100%;
+                border-radius: 20rpx;
+                height: 368rpx;
+            }
+        }
+        .footer{
+            display: flex;
+            padding: 30rpx 0;
+            font-family: "PingFangSC light";
+            font-size: 24rpx;
+            align-items: center;
+            color: #999;
+            border-bottom: 1px solid #ddd;
+
+            view{
+                margin-right: 10rpx;
+
+            }
+            view:nth-child(1){
+                color: #2ecc87;
+                font-size: 16rpx;
+                width: 52rpx;
+                height: 24rpx;
+                line-height: 24rpx;
+                text-align: center;
+                border-radius: 3rpx;
+                border: 1px solid #2ecc87;
+            }
+        }
+        .list_no {
+            width: 90%;
+            padding-left: 5%;
+            padding-right: 5%;
+            .list_img {
+                width: 70%;
+                height: 5em;
+                margin: 0 auto;
+                image {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+</style>
+
+<template>
+    <view class="my_topic">
+        <view class="list_no" wx:if="{{actives}}">
+            <view class="list_img">
+                <image src="https://h5.yzyy365.com/yunimg/nono.png" />
+            </view>
+        </view>
+        <repeat for="{{topicList}}" key="{{index}}">
+            <view @tap="topicDetails">
+                <view class="header">
+                    <view class="people">
+                        <image src="../images/me3.png" />
+                        <view>{{item.name}}</view>
+                    </view>
+                </view>
+                <view class="secition">
+                    <view class="text">#{{item.top}}#</view>
+                    <image wx:if="{{item.img}}" mode="aspectFit" src="{{item.img}}" />
+                </view>
+                <view class="footer">
+                    <view>种植</view>
+                    <view>{{item.num1}}浏览</view>
+                    <view>{{item.num2}}赞</view>
+                    <view>{{item.num3}}评论</view>
+                </view>
+            </view>
+        </repeat>
+
+    </view>
+
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class MyTopic extends wepy.page {
+        config = {
+            navigationBarTitleText: '我的话题'
+        };
+        components = {
+
+
+        };
+
+        data = {
+            topicList: [
+                // {
+                //     name: '喀拉布拉基',
+                //     top: '说说你都用过哪些好用的农贸工具？这是话题',
+                //     img: '../images/me3.png',
+                //     num1: '999',
+                //     num2: '199',
+                //     num3: '999',
+                // }, {
+                //     name: '喀拉布拉基',
+                //     top: '说说你都用过哪些好用的农贸工具？这是话题',
+                //     img: '../images/me3.png',
+                //     num1: '999',
+                //     num2: '199',
+                //     num3: '999',
+                // },{
+                //     status: 3,
+                //     name: '喀拉布拉基',
+                //     top: '说说你都用过哪些好用的农贸工具？这是话题',
+                //     // img: '../images/me3.png',
+                //     num1: '999',
+                //     num2: '199',
+                //     num3: '999',
+                // },
+            ],
+            actives: true
+        };
+
+        computed = {};
+
+        methods = {
+            topicDetails(){
+                wx.navigateTo({url: 'topicDetails'})
+            }
+        };
+
+        events = {};
+
+        onLoad(options) {
+
+        }
+    }
+</script>
+
+
+
+

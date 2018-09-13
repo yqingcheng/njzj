@@ -1,0 +1,362 @@
+<style lang="scss">
+    .zhushou{
+        .header{
+            height: 560rpx;
+            width: 100vw;
+            position: relative;
+            image{
+                width: 100%;
+                height: 100%;
+            }
+            .blo{
+                width: 605rpx;
+                height: 480rpx;
+                background: rgba(255,255,255,.5);
+                position: absolute;
+                top: 40rpx;
+                left: 72.5rpx;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .title{
+                    /*font-family: "PingFangSC Semibold";*/
+                    font-weight: 600;
+                    color: #404040;
+                    font-size: 34rpx;
+                    margin: 30rpx 0 38rpx 0;
+                }
+                .rongqi{
+                    margin-bottom: 36rpx;
+                    display: flex;
+                    width: 499rpx;
+                    align-items: center;
+                    height: 84rpx;
+                    box-sizing: border-box;
+                    border: 1px solid #2ecc87;
+                    padding: 0 36rpx;
+                    border-radius: 36rpx;
+                    justify-content: space-between;
+                    background: rgba(255,255,255,.8);
+                    view{
+                        font-family: "PingFangSC Regular";
+                        color: #404040;
+                        font-size: 26rpx;
+                    }
+                    input{
+                        flex: 1;
+                        font-family: "PingFangSC Regular";
+                        font-size: 26rpx;
+                        color: red;
+                        padding: 0 10rpx;
+                    }
+                }
+                .jisuan{
+                    margin-top: 10rpx;
+                    width: 499rpx;
+                    height: 84rpx;
+                    border: 1px solid #2ecc87;
+                    border-radius: 36rpx;
+                    line-height: 84rpx;
+                    color: #fff;
+                    font-size: 26rpx;
+                    font-family: "PingFangSC Medium";
+                    background: #2ecc87;
+                    text-align: center;
+                }
+            }
+            .blos{
+                width: 605rpx;
+                height: 480rpx;
+                background: rgba(255,255,255,.5);
+                position: absolute;
+                top: 40rpx;
+                left: 72.5rpx;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .title{
+                    /*font-family: "PingFangSC Semibold";*/
+                    font-weight: 600;
+                    color: #404040;
+                    font-size: 34rpx;
+                    margin: 30rpx 0 30rpx 0;
+                }
+                .bi{
+                    font-family: "PingFangSC Medium";
+                    color: #404040;
+                    font-size: 32rpx;
+                    margin-bottom: 20rpx;
+                    text{
+                        font-size: 42rpx;
+                        color: #CC913B;
+                    }
+                }
+                .next{
+                    margin-top: 16rpx;
+                    width: 499rpx;
+                    height: 84rpx;
+                    border-radius: 36rpx;
+                    line-height: 84rpx;
+                    color: #fff;
+                    font-size: 26rpx;
+                    font-family: "PingFangSC Medium";
+                    background: #f6b37f;
+                    text-align: center;
+                }
+                .send{
+                    margin-top: 22rpx;
+                    width: 499rpx;
+                    height: 84rpx;
+                    border-radius: 36rpx;
+                    line-height: 84rpx;
+                    color: #fff;
+                    font-size: 26rpx;
+                    font-family: "PingFangSC Medium";
+                    background: #2ecc87;
+                    text-align: center;
+                }
+            }
+        }
+        .bbs{
+            padding: 30rpx 30rpx 0 30rpx;
+            background: #eee;
+        }
+        .foot{
+            border-top: .5px solid #ddd;
+            background: white;
+            position: fixed;bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100vw;
+            height: 82rpx;
+            font-family: "PingFangSC light";
+            color: #34495e;
+            font-size: 26rpx;
+            .lef{
+                height: 100%;
+                width: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                button{
+                    background: white;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: "PingFangSC light";
+                    color: #34495e;
+                    font-size: 26rpx;
+                }
+                button::after{
+                    border: none;
+                }
+            }
+            image{
+                width: 28rpx;
+                height: 28rpx;
+                margin-right: 14rpx;
+            }
+        }
+    }
+</style>
+
+<template>
+    <view class="zhushou">
+        <view class="header">
+            <image src="https://file.yzyy365.com/images/yunlite/f70aac510b43cf5818ab1267a7fdc3bf.png"/>
+            <view class="blo" wx:if="{{!jisuan}}">
+                <view class="title">农药计算器</view>
+                <view class="rongqi">
+                    <view>喷雾器（容器）：</view>
+                    <input type="number"  @input="rongqi" placeholder="如：15"/>
+                    <view>升/公斤</view>
+                </view>
+                <view class="rongqi">
+                    <view>稀释倍数：</view>
+                    <input  type="number" @input="beishu" placeholder="如：2000"/>
+                    <view>倍</view>
+                </view>
+                <view class="jisuan" @tap="jisuan">
+                    开始计算
+                </view>
+            </view>
+            <view class="blos" wx:if="{{jisuan}}">
+                <view class="title">计算结果</view>
+                <view class="bi">{{rongqi}}L*{{beishu}}倍配比</view>
+                <view class="bi">需兑农药<text>{{haoke}}</text>毫克（毫升）</view>
+                <view class="next" @tap="again">重新计算</view>
+                <button class="send" open-type="share">发送给好友</button>
+            </view>
+        </view>
+        <view class="bbs">
+            <expert :expertList.sync="expertList" @skipDetails.user="skipDetails"></expert>
+        </view>
+        <loading :loading.sync="loading" :more.sync="more"></loading>
+        <view style="height: 82rpx;width: 100%"></view>
+        <view class="foot">
+            <view class="lef" @tap="backHome">
+                <image src="../images/home1.png"/>
+                <view>首页</view>
+            </view>
+            <view class="lef">
+                <button class="send" open-type="share">
+                    <image src="../images/fenxiang.png"/>
+                    <view>分享</view>
+                </button>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import Expert from '../components/expert'
+    import Loading from '../components/loading'
+
+    export default class Zhoushou extends wepy.page {
+        config = {
+            navigationBarTitleText: '农药计算器'
+        };
+        components = {
+            expert: Expert,
+            loading: Loading
+        };
+
+        data = {
+            rongqi: '',
+            beishu: '',
+            jisuan: false,
+            haoke: '',
+            expertList: [],
+            totalPages: '',   //总页数
+            pageNo: '1' ,   //当前页数
+            loading: false,
+            more:false
+        };
+
+        computed = {};
+
+        methods = {
+            rongqi(e) {
+                this.rongqi = e.detail.value
+            },
+            beishu(e) {
+                this.beishu = e.detail.value
+            },
+            jisuan() {
+                if(this.rongqi && this.beishu) {
+                    let ss = /^\d+(\.\d+)?$/
+                    if(ss.test(this.rongqi) && ss.test(this.beishu)) {
+                        this.jisuan = true
+                        this.haoke = (this.rongqi*1000/this.beishu).toFixed(0)
+                    } else {
+                        wx.showToast({
+                            title: '请填写数字',
+                            image: '../images/faile.png'
+                        });
+                    }
+
+                } else {
+                    wx.showToast({
+                        title: '请填写完整信息',
+                        image: '../images/faile.png'
+                    });
+                }
+            },
+            again() {
+                this.rongqi = ''
+                this.beishu = ''
+                this.jisuan = false
+            },
+
+            /*
+      * 点击专家列表 跳转到专家详情
+      * */
+            skipDetails(e) {
+                wx.navigateTo({
+                    url: `expertDetails?id=${e.currentTarget.dataset.id}`
+                })
+            },
+            backHome() {
+                wx.switchTab({
+                    url: 'index'
+                })
+            }
+        };
+
+        events = {};
+        /*
+            * 上拉刷新
+            * */
+        onPullDownRefresh() {
+            this.pageNo = 1
+            this.expertList = []
+            this.expertLists();//重新加载产品信息
+            setTimeout(() => {
+                wx.stopPullDownRefresh();//停止当前页面下拉刷新。
+            }, 500)
+        }
+        /*
+        * 下拉触底
+        * */
+        onReachBottom() {
+            this.loading = true
+            if(this.pageNo*1+1 <= this.totalPages) {
+                this.pageNo ++
+                this.expertLists()
+            } else {
+                this.loading = false
+                this.more = true
+            }
+        }
+        /*
+      * 请求推荐专家列表
+      * */
+        expertLists() {
+            this.loading = true
+            wx.request({
+                url: `${this.$parent.globalData.h5url}/zzj/search/expert.do`,
+                data: {
+                    pageNo: this.pageNo,
+                    pageSize: 20
+                },
+                header: {
+                    'content-type': 'application/json'
+                },
+                success: (res) => {
+                    res.data.data.queryList.forEach( item => {
+                        this.expertList.push({
+                            img: `${this.$parent.globalData.img_host}${item.headImg}`,
+                            name: item.name,
+                            text: item.professional,
+                            a: '特约',
+                            address: item.company,
+                            ling: item.allSpecies,
+                            uuid: item.uuid
+                        })
+                    })
+                    this.totalPages = res.data.data.totalPages
+
+                    this.$apply()
+                }
+            })
+        }
+        onLoad() {
+            this.expertLists()
+        }
+        onShareAppMessage() {
+            return {
+                title: '农药计算器',
+                desc: '农药计算器',
+                path: 'pages/zhushou'
+            }
+        }
+    }
+</script>
+
+
+
+

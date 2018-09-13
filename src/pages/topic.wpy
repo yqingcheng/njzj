@@ -1,0 +1,267 @@
+<style lang="scss">
+    .topic{
+        padding: 0 30rpx;
+        border-top: 1px solid #eee;
+        .header{
+            display: flex;
+            justify-content: space-between;
+            padding:16rpx 0;
+            align-items: center;
+            .people{
+                display: flex;
+                align-items: center;
+                font-size: 28rpx;
+                font-family: "PingFangSC light";
+                color: #33485c;
+                image{
+                    width: 78rpx;
+                    height: 78rpx;
+                    border-radius: 50%;
+                    border: 1px solid #eee;
+                    margin-right: 20rpx;
+                }
+            }
+            .guanzhu{
+                font-family: "PingFangSC Medium";
+                font-size: 22rpx;
+                color: #FFA200;
+                width: 103rpx;
+                height: 40rpx;
+                line-height: 40rpx;
+                text-align: center;
+                border: 1px solid #FFA200;
+                border-radius: 10rpx;
+            }
+            .yiguanzhu{
+                font-family: "PingFangSC Medium";
+                font-size: 22rpx;
+                color: #636363;
+                width: 110rpx;
+                height: 40rpx;
+                line-height: 40rpx;
+                text-align: center;
+                border: 1px solid #636363;
+                border-radius: 10rpx;
+            }
+        }
+        .secition{
+            .text{
+                font-family: "PingFangSC Regular";
+                color: #33485c;
+                font-size: 30rpx;
+                margin-bottom: 25rpx;
+            }
+            image{
+                width: 100%;
+                border-radius: 20rpx;
+                height: 368rpx;
+            }
+        }
+        .footer{
+            display: flex;
+            padding: 30rpx 0;
+            font-family: "PingFangSC light";
+            font-size: 24rpx;
+            align-items: center;
+            color: #999;
+            border-bottom: 1px solid #ddd;
+
+            view{
+                margin-right: 10rpx;
+
+            }
+            view:nth-child(1){
+                color: #ff4444;
+                font-size: 16rpx;
+                width: 52rpx;
+                height: 24rpx;
+                line-height: 24rpx;
+                text-align: center;
+                border-radius: 3rpx;
+                border: 1px solid #ff4444;
+            }
+            view:nth-child(2){
+                color: #2ecc87;
+                font-size: 16rpx;
+                width: 52rpx;
+                height: 24rpx;
+                line-height: 24rpx;
+                text-align: center;
+                border-radius: 3rpx;
+                border: 1px solid #2ecc87;
+            }
+        }
+        .fabu{
+            position: fixed;
+            bottom: 30rpx;
+            right: 30rpx;
+            image{
+                width: 129rpx;
+                height: 129rpx;
+            }
+        }
+    }
+</style>
+
+<template>
+    <view class="topic">
+        <repeat for="{{topicList}}" key="{{index}}">
+            <view @tap="topicDetails">
+                <view class="header">
+                    <view class="people">
+                        <image src="../images/me3.png" />
+                        <view>{{item.name}}</view>
+                    </view>
+                    <view catchtap="guanzhu" wx:if="{{item.status === 1}}" class="guanzhu">+关注</view>
+                    <view catchtap="guanzhu" wx:if="{{item.status === 2}}" class="yiguanzhu">v已关注</view>
+                    <view catchtap="guanzhu" wx:if="{{item.status === 3}}" class="yiguanzhu">=互相关注</view>
+                </view>
+                <view class="secition">
+                    <view class="text">#{{item.top}}#</view>
+                    <image wx:if="{{item.img}}" mode="aspectFit" src="{{item.img}}" />
+                </view>
+                <view class="footer">
+                    <view>精选</view>
+                    <view>种植</view>
+                    <view>{{item.num1}}浏览</view>
+                    <view>{{item.num2}}赞</view>
+                    <view>{{item.num3}}评论</view>
+                </view>
+            </view>
+        </repeat>
+        <login :showModal.sync="showModal"
+               @ss.user="ss"
+               @jujue.user="jujue"
+        ></login>
+        <view class="fabu" @tap="fabuTopic">
+            <image mode="scaleToFill" src="../images/topic.png" />
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import API from '../mixins/api'
+    import Login from '../components/login'
+
+    export default class Topic extends wepy.page {
+        config = {
+            navigationBarTitleText: '话题列表'
+        };
+        components = {
+            login: Login
+        };
+
+        data = {
+            topicList: [
+                {
+                    status: 1,
+                    name: '喀拉布拉基',
+                    top: '说说你都用过哪些好用的农贸工具？这是话题',
+                    img: '../images/me3.png',
+                    num1: '999',
+                    num2: '199',
+                    num3: '999',
+                }, {
+                    status: 2,
+                    name: '喀拉布拉基',
+                    top: '说说你都用过哪些好用的农贸工具？这是话题',
+                    img: '../images/me3.png',
+                    num1: '999',
+                    num2: '199',
+                    num3: '999',
+                },{
+                    status: 3,
+                    name: '喀拉布拉基',
+                    top: '说说你都用过哪些好用的农贸工具？这是话题',
+                    // img: '../images/me3.png',
+                    num1: '999',
+                    num2: '199',
+                    num3: '999',
+                },
+            ],
+            showModal: false
+        };
+
+        computed = {};
+        common(){
+            API.API.checkuserStatus(this, (res) => {
+                if(res.data.code === 100 && wx.getStorageSync("uuid")){
+                    wx.hideLoading()
+                    wx.navigateTo({
+                        url: `fabuTopi`
+                    })
+                } else if(res.data.code === 102) {
+                    wx.getUserInfo({
+                        success: res => {
+                            console.log(res)
+                            wx.setStorageSync("user", res);
+                            API.API.getSessionId(this, () => {
+                                this.common()
+                            })
+                        }
+                    })
+
+                }  else {
+                    API.API.getBind(this, (res) => {
+                        wx.setStorageSync("uuid", res.data.data.uuid)
+                        wx.hideLoading()
+                        wx.navigateTo({
+                            url: `fabuTopi`
+                        })
+                    })
+                }
+            })
+        }
+        fabuTopicx(e) {
+            // 先判断是否登录
+            if (wx.getStorageSync("user").userInfo) {
+                wx.showLoading({
+                    title: '加载中',
+                })
+                if (wx.getStorageSync("sessionId")) {
+                    this.common()
+                } else {
+                    API.API.getSessionId(this, () => {
+                        this.common()
+                    })
+                }
+            } else {
+                this.showModal = true
+            }
+        }
+        methods = {
+            topicDetails(e) {
+                wx.navigateTo({url: 'topicDetails'})
+            },
+            guanzhu() {
+                console.log(1)
+            },
+            fabuTopic(){
+                this.fabuTopicx()
+                // wx.navigateTo({url: 'fabuTopi'})
+            },
+            ss() {
+                this.showModal = false
+            },
+            jujue() {
+                this.showModal = false
+            },
+        };
+
+        events = {
+            bindgetuserinfo(e) {
+                this.showModal = false
+                if(e.detail.errMsg === 'getUserInfo:ok') {
+                    wx.setStorageSync("user", e.detail);
+                    this.fabuTopicx()
+                }
+            }
+        };
+
+        onLoad() {
+
+        }
+        onShareAppMessage() {}
+    }
+</script>

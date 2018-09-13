@@ -1,0 +1,421 @@
+
+<style lang="scss">
+    @font-face {
+        font-family: "iconfont";
+        src: url(data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAAWAAAsAAAAAB+AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAAQwAAAFZW8khoY21hcAAAAYAAAABlAAABnM9Ha0NnbHlmAAAB6AAAAYwAAAGgPiTvzGhlYWQAAAN0AAAAMQAAADYSJZivaGhlYQAAA6gAAAAgAAAAJAg1A9hobXR4AAADyAAAABAAAAAQED///WxvY2EAAAPYAAAACgAAAAoBRgCabWF4cAAAA+QAAAAfAAAAIAETAF1uYW1lAAAEBAAAAUUAAAJtPlT+fXBvc3QAAAVMAAAAMQAAAEIuzhi9eJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2BkEWCcwMDKwMHUyXSGgYGhH0IzvmYwYuRgYGBiYGVmwAoC0lxTGBwYKp6lMTf8b2CIYW5gaAEKM4LkAOAfC+8AeJzFkMENwCAIRT9iG9N0E3tsOlAPpiM4MWtYQC9O4DdP4IeIAcAGgJVLiQB9IJhedcl9xuF+xKN10hM0VslSWpsyE3lH8izYy7RjmWjd6Fmn3/eobN91oF+U3LG9SumAf4I8EbcAAAB4nB2Ru27UQBiF/38mM7bXYw874/VtL94L9oACi2IcpyBkGxoQRSRo0pEHIAVNmhTbIFFQ8AQrBREhRfQIKQUF0PAUCF4gD4CNxdF3TnmkowMMoP1Fr2gMGm7BDjyCQwDk2zj3yRhnplqSbRzM2CAKfGoWZmYt5kv6EKM5D8KyroqIW1yijxO8PytrsyQGd6sD8gDLcIyYDNNnKh8p+g57sZm8bp6Q9zjIFiN5cLd5fGcVlFNtnwqlEqXe2pwxm5At6ePLKHSY0+PNBybTwVV2m2QoEpM+PfKmQ3X8pjoZ55GDuF6jHk79j6t+2u84S0OtEuuGZ8ept7gZ4OkfN9ZiXPyGTuR/fCEnoLq1kIflCuvqHhbdlgwtHkQ7+NnNxFfRkUXi4kKIjRA/xLRznHmXl14mugps/7ZnW0d0DUMANjc548WeNkW9l+u6jDSboEQdWpy+4rz53nzzE7rfuj2JLzb2xNrgsXR67T4R1pqen/O+xOfX7oiWuOt5zc+Sjtzr5pN0umvgHyKVR+x4nGNgZGBgAOL/Mbwp8fw2Xxm4WRhA4HqEVjSM/v/3fw1LJHMDkMvBwAQSBQAuMAtGAAAAeJxjYGRgYG7438AQwxL2/+//vyyRDEARFMACAK9ZBxQEAAAAA+kAAAQAAAAEVv/9AAAAAAB2AJoA0AAAeJxjYGRgYGBhCGRgZQABJiDmAkIGhv9gPgMAERIBcQB4nGWPTU7DMBCFX/oHpBKqqGCH5AViASj9EatuWFRq911036ZOmyqJI8et1ANwHo7ACTgC3IA78EgnmzaWx9+8eWNPANzgBx6O3y33kT1cMjtyDRe4F65TfxBukF+Em2jjVbhF/U3YxzOmwm10YXmD17hi9oR3YQ8dfAjXcI1P4Tr1L+EG+Vu4iTv8CrfQ8erCPuZeV7iNRy/2x1YvnF6p5UHFockikzm/gple75KFrdLqnGtbxCZTg6BfSVOdaVvdU+zXQ+ciFVmTqgmrOkmMyq3Z6tAFG+fyUa8XiR6EJuVYY/62xgKOcQWFJQ6MMUIYZIjK6Og7VWb0r7FDwl57Vj3N53RbFNT/c4UBAvTPXFO6stJ5Ok+BPV8bUnV0K27LnpQ0kV7NSRKyQl7WtlRC6gE2ZVeOEXpc0Yk/KGdI/wAJWm7IAAAAeJxjYGKAAC4G7ICFkYmRmZGFkZWBsYIzMzk/Ly0/rySTozgjvzQ5MS+dgQEAY0MHzgAAAA==) format('woff');
+    }
+    .iconfont {
+        font-family:"iconfont" !important;
+        font-size:16px;
+        font-style:normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .icon-iconfonti:before { content: "\e62b"; }
+
+    .icon-shoucang:before { content: "\e666"; }
+    page{
+        background: #f7f7f7;
+        font-size: 30rpx;
+        height: 100%;
+        width: 100%;
+    }
+    .sign{
+        .species{
+            display: flex;
+            width: 100vw;
+            border-top:1px solid #eee;
+            font-size: 30rpx;
+            scroll-view{
+                height: 99vh;
+            }
+            scroll-view:nth-child(1){
+                background: #F5F5F5;
+                width: 33%;
+                text-align: center;
+                line-height: 118rpx;
+                view{
+                    border-bottom: 1px solid #ccc;
+                    border-left: 2px solid #eee;
+                }
+                .ss{
+                    background: #FAFBF6;
+                    border-left: 2px solid #4CCC40;
+                }
+            }
+            scroll-view:nth-child(2){
+                flex: 1 1 67%;
+                background: white;
+                .flex_blo{
+                    display: flex;
+                    flex-flow: row wrap;
+                    line-height: 106rpx;
+                    width: 100%;
+                }
+                view{
+                    width: 50%;
+                    text-align: center;
+                }
+            }
+        }
+        .question{
+            background: white;
+            padding: 30rpx;
+            textarea{
+                width: 100%;
+                font-size: 32rpx;
+                height: 80px;
+            }
+            .labe{
+                width: 150rpx;
+                height: 150rpx;
+                margin: 0 20rpx 30rpx 20rpx;
+                background: #f8f8f8;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .zhu{
+                color: #da0000;
+                font-size: 25rpx;
+                margin-left: 20rpx;
+            }
+            .image_list{
+                display: flex;
+                /*justify-content: space-between;*/
+                /*padding: 0 20rpx;*/
+                margin-left: -2.3%;
+                flex-flow: row wrap;
+                image{
+                    width: 100%;
+                    height: 100%;
+                    background: #f8f8f8;
+                }
+                .ige{
+                    width: 150rpx;
+                    height: 150rpx;
+                    margin-left: 2.3%;
+                    margin-top: 20rpx;
+                    align-items: center;
+                    justify-content: center;
+                    background: #f8f8f8;
+                    display: flex;
+                }
+                .blco{
+                    position: relative;
+                    width: 150rpx;
+                    height: 150rpx;
+                    margin-left: 2.3%;
+                    margin-top: 20rpx;
+                    z-index: 9;
+                    .dede{
+                        position: absolute;
+                        width: 100%;
+                        height: 60rpx;
+                        background: rgba(0,0,0,.5);
+                        text-align: center;
+                        line-height: 60rpx;
+                        color: white;
+                        bottom: 0;
+                        font-size: 28rpx;
+                        z-index: -1;
+                    }
+
+                }
+                .blco:hover{
+                    .dede{
+                        z-index: 99;
+                    }
+                }
+
+            }
+        }
+        .speciesChoose{
+            line-height: 90rpx;
+            background: white;
+            margin: 40rpx auto;
+            width: 94vw;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10rpx;
+            box-sizing: border-box;
+            border-radius: 10rpx;
+            view:nth-child(1){
+                display: flex;
+            }
+            text{
+                color: #00A700;
+                font-size: 0.8em;
+                margin-left: 20rpx;
+            }
+        }
+        .footerbtn{
+            position: fixed;
+            bottom:0;left:0;width: 100%;
+            view{
+                width: 100%;
+                height: 3em; line-height: 3em;
+                text-align: center;
+                background: #f4f4f4;
+                color: #00D885; font-size:1em;
+                border-top: 1px solid #ccc;
+            }
+        }
+    }
+</style>
+
+<template>
+    <view class="sign">
+        <view class="question" wx:if="{{!speciesStatus}}">
+            <textarea  name="message"
+                    placeholder="写下您想提出的关于种植作物，以及饲养家禽家畜等，遇到的问题"
+                    @input="toValue"
+                    class="section_textarea"
+                    placeholder-style="color:#9ba0a6;"
+                       value="{{message}}"
+                    maxlength="2000">
+            </textarea>
+
+            <view wx:if="{{photo}}" class="labe" @tap="chooseImage">
+                <icon1 type="zhaopianphoto177" color="#cfcfcf" fontSize="80"></icon1>
+            </view>
+            <view class="zhu" wx:if="{{photo}}">
+                注：最多可上传九张图片
+            </view>
+            <view class="image_list" wx:if="{{!photo}}">
+                <repeat for="{{imagelist}}">
+                    <view class="blco">
+                        <image src="{{img_host+item}}"/>
+                        <view class="dede" @tap="delimg" data-index="{{index}}">删除</view>
+                    </view>
+                </repeat>
+                <view @tap="chooseImage" class="ige">
+                    <icon2  type="jia" color="#cfcfcf" fontSize="100" ></icon2>
+                </view>
+
+            </view>
+
+        </view>
+
+        <view class="speciesChoose" @tap="speciesChoose" wx:if="{{!speciesStatus}}">
+            <view>物种选择 <text>{{planId}}</text></view>
+            <text class="iconfont icon-iconfonti" style="font-size:60rpx;color:black;"></text>
+        </view>
+
+
+        <view wx:if="{{speciesStatus}}" class="species">
+
+                <scroll-view scroll-y="{{true}}">
+                    <repeat for="{{speciesList}}"  key="{{index}}">
+                        <view @tap="speciesListLeft" data-index="{{index}}" class="{{index1 == index ? 'ss' : ''}}">{{item.name}}</view>
+                    </repeat>
+                </scroll-view>
+                <scroll-view scroll-y="{{true}}">
+                    <view class="flex_blo">
+                        <repeat for="{{speciesList[index1].subList}}" key="{{index}}">
+                            <view @tap="speciesListRight" data-index="{{item}}">{{item.name}}</view>
+                        </repeat>
+                    </view>
+                </scroll-view>
+
+
+        </view>
+
+
+
+        <view class="footerbtn" wx:if="{{!speciesStatus}}">
+            <!--<form report-submit='true' @submit='checkForm'>-->
+                <view  @tap='checkForm'>完成</view>
+            <!--</form>-->
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import Icon from '../components/Icon'
+    var validate = require("../mixins/validate").validate;
+    export default class Me extends wepy.page {
+        config = {
+            navigationBarTitleText: '问题填写'
+        };
+        components = {
+            icon1: Icon,
+            icon2: Icon
+        };
+
+        data = {
+            message: '',
+            planId: '',
+            imagelist: [],
+            expertID: '',
+            photo: true,
+            speciesStatus: false,
+            speciesList: [],
+            index1: 0,
+            img_host: ''
+        };
+
+        computed = {};
+
+        methods = {
+            /*
+     * 点击物种列表
+     * */
+            speciesListLeft(e) {
+                this.index1 = e.currentTarget.dataset.index
+            },
+            speciesListRight(e) {
+                this.planId = e.currentTarget.dataset.index.name
+                this.speciesStatus = false
+            },
+            /*
+            * 物种选择
+            * */
+            speciesChoose() {
+                this.speciesStatus = true
+                wx.request({
+                    url: `${this.$parent.globalData.h5url}zzj/goodat.do`,
+                    data: {
+                        expertUUID: this.expertID
+                    },
+                    header: {
+                        'content-type': 'application/json'
+                    },
+                    success: (res) => {
+                        if(res.data.data.plants.length > 0) {
+                            this.speciesList = res.data.data.plants
+                        } else {
+                            this.speciesList = res.data.data.animals
+                        }
+                        this.$apply()
+                    }
+                })
+            },
+            /*
+            * textarea 输入内容
+            * */
+            toValue(e) {
+                this.message = e.detail.value
+            },
+            delimg(e) {
+                this.imagelist.splice(e.currentTarget.dataset.index, 1)
+                if(this.imagelist.length === 0) {
+                    this.photo = true
+                }
+                this.$apply()
+            },
+            /*
+            * 上传图片
+            * */
+            chooseImage() {
+                wx.chooseImage({
+                    success: (res) => {
+                        this.photo = false
+                        if((this.imagelist.length + res.tempFilePaths.length) <= 9) {
+                            res.tempFilePaths.forEach( item => {
+                                let tempFilePaths = item
+                                wx.uploadFile({
+                                    url: `${this.$parent.globalData.h5url}zzj/uploadZzjAskFile.do`, //仅为示例，非真实的接口地址
+                                    filePath: tempFilePaths,
+                                    name: 'file',
+                                    formData:{},
+                                    success: (res) =>{
+                                        let url = JSON.parse(res.data).data.filepath
+                                        this.imagelist.push(
+                                            url
+                                        )
+                                        this.$apply()
+                                    }
+                                })
+                            })
+                        } else {
+                            wx.showToast({
+                                title: '最多可上传九张',
+                                image: '../images/fails.png',
+                                duration: 2000
+                            })
+                        }
+                    }
+                })
+            },
+            /*
+            * 完成提交
+            * */
+            checkForm(e) {
+                let textareaval = this.message
+                if (validate.isEmpty(textareaval)) {
+                    wx.showToast({
+                        title: '文本框不能为空',
+                        image: '../images/faile.png',
+                        duration: 1000
+                    })
+                    return;
+                }
+                if(this.planId === '') {
+                    wx.showToast({
+                        title: '请选择物种',
+                        image: '../images/faile.png',
+                        duration: 1000
+                    })
+                    return;
+                }
+                // wx.showLoading()
+                let uuid = wx.getStorageSync("uuid")
+                let data = { uuid: uuid, specie: this.planId,
+                    content: this.message,imgs:this.imagelist,
+                    questionSource: 3,expertUUID: this.expertID};
+                wx.request({
+                    url: `${this.$parent.globalData.h5url}/zzj/askZzj.do`,
+                    data: data,
+                    method: 'post',
+                    header: {
+                        // 'content-type': 'application/json',
+                        'content-type': 'application/x-www-form-urlencoded'
+                    },
+                    success: (res) => {
+                        if( res.data.code === 100){
+                            wx.navigateTo({
+                                url: `message?quuid=${res.data.data.question.uuid}`,
+                            });
+                        }else{
+                            wepy.showToast({
+                                title: res.data.data,
+                                icon:"none"
+                            })
+                        }
+                        this.$apply()
+                    }
+                })
+                // if (imgarrs != null || imgarrs.length!=0)
+                //     imgstr = this.imgarrs.join(",");
+                // let speciename = this.data.planId;
+                // let user = app.getStoreUserInfo();
+                // let data = { uuid: user.uuid, specie: speciename,
+                //     content: textareaval, imgs: imgstr,
+                //     formId: e.detail.formId,questionSource: 3};
+                // app.httppost(url +"/question/askYdt.do",data,function(rdata){
+                //     wx.hideLoading();
+                //     if(rdata.code==100){
+                //         wx.redirectTo({
+                //             url: "../message/message?quuid=" + rdata.data.question.uuid,
+                //         });
+                //     }else{
+                //         wx.showToast({
+                //             title: rdata.data,
+                //             icon:"none"
+                //         })
+                //     }
+                // });
+            }
+        };
+
+        events = {};
+
+        onLoad(options) {
+            this.img_host = this.$parent.globalData.img_host
+            this.expertID = options.expertID
+        }
+    }
+</script>

@@ -1,0 +1,514 @@
+<style lang="scss">
+    page{
+        background: #F6F6F6;
+    }
+    .wrap{
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    .tabbar{
+        display: flex;
+        justify-content: space-between;
+        background: white;
+        padding: 20rpx 0;
+        border-top: 1px solid #eee;
+        view{
+            width: 50%;
+            border-right: 1px solid #eee;
+            margin-right: -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 60rpx;
+            font-size: 30rpx;
+            color: #33485c;
+            font-family: "PingFangSC light";
+        }
+        image{
+            width: 36rpx;
+            margin-left: 16rpx;
+        }
+        .imgs{
+            transform:rotate(180deg);
+        }
+    }
+    .expert{
+        padding: 14rpx 30rpx;
+    }
+    .block{
+        position: fixed;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,.5);
+    }
+    .region{
+        position: fixed;
+        height: 0;
+        width: 100vw;
+        background: white;
+        font-size: 30rpx;
+        line-height: 70rpx;
+        bottom: 0;
+        .head{
+            display: flex;
+            justify-content: space-between;
+
+            .plase{
+                border-bottom: 1px solid #1fab39;
+                color: #1fab39;
+            }
+            view{
+                flex: 1 1 auto;
+                text-align: center;
+            }
+        }
+        .foot{
+            padding-left: 30rpx;
+            view{
+                border-bottom: 1px solid #ddd;
+            }
+        }
+    }
+    .species{
+        display: flex;
+        width: 100vw;
+        border-top:1px solid #eee;
+        font-size: 30rpx;
+        scroll-view{
+            height: 80vh;
+        }
+        scroll-view:nth-child(1){
+            background: #F5F5F5;
+            width: 33%;
+            text-align: center;
+            line-height: 118rpx;
+            view{
+                border-bottom: 1px solid #ccc;
+                border-left: 2px solid #eee;
+            }
+            .ss{
+                background: #FAFBF6;
+                border-left: 2px solid #4CCC40;
+            }
+        }
+        scroll-view:nth-child(2){
+            flex: 1 1 67%;
+            background: white;
+            .flex_blo{
+                display: flex;
+                flex-flow: row wrap;
+                line-height: 106rpx;
+                width: 100%;
+            }
+            view{
+                width: 50%;
+                text-align: center;
+            }
+        }
+    }
+
+</style>
+
+<template>
+    <view>
+        <view class="wrap">
+            <search @search.user="search" :keyword.sync="keyword"></search>
+            <view style="background: white;width:100vw;height: 20rpx"></view>
+            <view class="tabbar">
+                <view @tap="species">{{specieContent}} <image mode="widthFix" class="{{!species ? 'imgs' : ''}}" src="../images/select.png"></image></view>
+                <view @tap="region">{{locationContent}} <image mode="widthFix" src="../images/select.png"></image></view>
+            </view>
+        </view>
+        <view style="width: 100%;height: 180rpx;"></view>
+
+
+
+        <view class="expert" wx:if="{{species}}">
+            <expert :expertList.sync="expertList" @skipDetails.user="skipDetails"></expert>
+        </view>
+        <view wx:if="{{!species}}" class="species">
+            <scroll-view scroll-y="{{true}}">
+               <repeat for="{{speciesList}}"  key="{{index}}">
+                   <view @tap="speciesListLeft" data-index="{{index}}" class="{{index1 == index ? 'ss' : ''}}">{{item.name1}}</view>
+               </repeat>
+            </scroll-view>
+            <scroll-view scroll-y="{{true}}">
+               <view class="flex_blo">
+                   <repeat for="{{speciesList[index1].list}}" key="{{index}}">
+                       <view @tap="speciesListRight" data-index="{{item}}">{{item}}</view>
+                   </repeat>
+               </view>
+            </scroll-view>
+        </view>
+
+        <view class="block" wx:if="{{region}}" @tap="block"></view>
+        <view animation="{{animationData}}"
+                     catchtap="ss" class="region"  >
+            <view class="head" scroll-y="{{false}}">
+                <repeat for="{{select}}" key="{{index}}">
+                    <view @tap="sele" data-index="{{index}}" class="{{seles == index ? 'plase' : ''}}">{{item}}</view>
+                </repeat>
+
+            </view>
+            <scroll-view  scroll-y="{{true}}" style="height: 44vh" class="foot">
+                <view @tap="all">全部</view>
+                <repeat wx:if="{{aa}}" for="{{ss}}" key="{{index}}">
+                    <view data-index="{{index}}" @tap="ssClick">{{item.name}}</view>
+                </repeat>
+                <repeat wx:if="{{aaa}}" for="{{sss}}" key="{{index}}">
+                    <view data-index="{{index}}" @tap="ssClicks">{{item.name1}}</view>
+                </repeat>
+                <repeat wx:if="{{aaaa}}" for="{{ssss}}" key="{{index}}">
+                    <view data-index="{{index}}" @tap="ssClickss">{{item}}</view>
+                </repeat>
+            </scroll-view>
+        </view>
+        <loading :loading.sync="loading" :more.sync="more"></loading>
+    </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import Search from '../components/search'
+  import Expert from '../components/expert'
+  import Loading from '../components/loading'
+  import selectList from '../mixins/city'
+
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '找专家'
+    };
+    components = {
+      search: Search,
+      expert: Expert,
+        loading: Loading
+    };
+
+    data = {
+      region: false,
+      animationData: {},
+      species: true,
+      index1: 0,
+        status: '',
+        speciesList: [],
+        wuzhong: [{"name":"种植","second":[{"list":["水稻","大麦青稞","玉米","马铃薯","高粱","小麦","甘薯地瓜","谷子糜子","大豆","木薯","燕麦荞麦","其他粮食类","绿豆","黑麦","红豆","豌豆","蚕豆","青稞","糜子","土豆"],"name1":"粮食作物"},{"list":["油菜","向日葵","芝麻","花生","胡麻","棉花","甘蔗","蚕桑","麻类","甜菜","茶树","天然橡胶","苜蓿","牧草","其他经济类","咖啡","烟叶","可可","橡胶","棕榈"],"name1":"经济作物"},{"list":["西甜瓜","梨","香蕉","柑橘","葡萄","荔枝","苹果","桃","其他水果类","杏树","山楂","板栗","李子","樱桃","核桃","枣","柿子","龙眼","芒果","芦柑","枇杷","木瓜","石榴","杨梅","杨桃","青枣","菠萝","榴莲","火龙果","西番莲","西瓜","甜瓜","哈蜜瓜","草莓","猕猴桃","蓝莓","桑葚","柚子","冬枣"],"name1":"水果"},{"list":["其他蔬菜类","马铃薯","甘蓝","花菜","西兰花","小油菜","大白菜","娃娃菜","西葫芦","芹菜","莴笋莴苣","冬瓜","南瓜","茄子","辣椒","西红柿","豇豆","荷兰豆","蚕豆","豆角","糯玉米","甜玉米","水果玉米","四季豆","黄秋葵","扁豆","花椰菜","紫甘蓝","空心菜","菜心","菜薹","菠菜","生菜","苋菜","大蒜","姜","韭菜","圆葱","山药","萝卜","胡萝卜","芥蓝","莲藕","茭白","慈姑","莼菜","茡荠","蘑菇","香菇","平菇","鸡腿菇","杏鲍菇","金针菇","银耳","灵芝","冬虫夏草","木耳","番茄","黄瓜","大葱","苦瓜","青瓜","丝瓜","瓠瓜","菜豆","豌豆","土豆","茼蒿","茼蒿","莲花菜"],"name1":"蔬菜"},{"list":["人参","党参","西洋参","三七","牛蒡","金银花","玛咖","白术","防风","桔梗","生地","瓜蒌","柴胡","甘草","枸杞","红花","黄芪","金钱草","决明子","益母草","田七","天麻","灵芝","白芷","板蓝根","大黄","地黄","茯苓","大力子","急性子","旱半夏","玫瑰","其他中草药","川芎","百合"],"name1":"中草药"},{"list":["月季","兰花","君子兰","发财树","绿萝","海棠","茶花","菊花","槐树","红枫","黄杨","杏李","樱花","白蜡","桉树","银杏","柏树","松树","腊梅","桂花","梅花","竹子","白头翁","百日草","丁香","杜鹃花","荷花","康乃馨","柳树","女真","其他花卉苗木","杨树","迎春","玉兰","栀子花","紫荆","百合"],"name1":"花卉苗木"}]},{"name":"养殖","second":[{"list":["猪","奶牛","肉牛牦牛","肉羊","绒毛用羊","其他牲畜类","狗"],"name1":"牲畜"},{"list":["蛋鸡","肉鸡","鸭","其他家禽类","鹅","鹌鹑","鸽子","火鸡","土鸡"],"name1":"家禽"},{"list":["虾","贝类","罗非鱼","鲆鲽类","其他水产类","青鱼","草鱼","鲢鱼","鲤鱼","鲶鱼","泥鳅","乌龟","甲鱼","蛙类","鳕鱼","鲟鱼","鳙鱼","黄鳝","螃蟹","鳄鱼"],"name1":"水产"},{"list":["兔","蜂","蚕","鹿","狐狸","貉子","土鸡","斑鸠","蟾蜍","黄粉虫","孔雀","蚯蚓","竹鼠","土元","蝎子","蜈蚣","野鸡","蛙类","鳄鱼","貂","蛇","鸵鸟","肉狗","其他特种养殖","大麦虫","蝴蝶","金蝉","豚鼠"],"name1":"特种养殖"}]}],
+      selectList: [
+          {
+              name: "山西",
+              city:[
+                        {name1:"太原", area:["小店", "吴城",]},
+                        {name1:"临汾", area:["浮山", "古县",]},
+                  ]
+          },
+          {
+              name: "河北",
+              city:[
+                  {name1:"石家庄", area:["长安区","桥东区","桥西区","新华区","郊  区",]},
+                  {name1:"唐山", area:["路南区","路北区","古冶区"]},
+              ]
+          }
+      ],
+        ss:[],      //省
+        sss: [],     //市
+        ssss: [],      //县、区
+        aa: true,     //省
+        aaa: false,     //市
+        aaaa: false,     //县、区
+      expertList: [],
+        select: ['请选择'],     //地区横栏数组
+        seles: 0,   //地区横栏 选中 index值
+        questionType: '',    // 栽培 植保 土肥 品种选项
+        keyword: '',  // 关键字
+        location: '',    // 地区
+        specie: '',    //物种
+        pageNo: 1,
+        specieContent: '物种',
+        locationContent: '地区',
+        totalPages: 1,
+        loading: false,
+        more:false
+    };
+
+
+    computed = {};
+    /*
+    * 动画
+    * */
+    donghua() {
+        this.region ? this.region = false : this.region = true
+        let animation = wx.createAnimation({
+            duration: 1000,
+            timingFunction: "ease",
+            delay: 0
+        })
+        animation.height(0).step()
+        this.animationData = animation.export()
+    }
+    methods = {
+
+
+      ss() {},
+      /*
+      * 点击半透明盒子
+      * */
+      block() {
+
+        this.donghua()
+      },
+      /*
+      * 搜索
+      * */
+      search(e) {
+          this.keyword = e.detail.value
+          this.pageNo = 1
+          this.expertList = []
+          this.expertLists()
+      },
+      /*
+      * 点击地区
+      * */
+      region() {
+
+        if(this.species) {
+          this.region ? this.region = false : this.region = true
+          let animation = wx.createAnimation({
+            duration: 1000,
+            timingFunction: "ease",
+            delay: 0
+          })
+          animation.height('50vh').step()
+          this.animationData = animation.export()
+        } else {
+          this.species = true
+        }
+      },
+      /*
+      * 点解物种
+      * */
+      species() {
+          this.loading = false
+          this.more = false
+        this.species ? this.species = false : this.species = true
+      },
+      /*
+      * 点击物种列表
+      * */
+      speciesListLeft(e) {
+        this.index1 = e.currentTarget.dataset.index
+
+      },
+      speciesListRight(e) {
+          this.specie = e.currentTarget.dataset.index
+          this.species = true
+          this.specieContent = e.currentTarget.dataset.index
+          this.pageNo = 1
+          this.expertList = []
+          this.expertLists()
+
+      },
+      /*
+      * 点击专家列表 跳转到专家详情
+      * */
+      skipDetails(e) {
+        wx.navigateTo({
+          url: `expertDetails?id=${e.currentTarget.dataset.id}`
+        })
+      },
+        /*
+        * 地区窗上面横栏点击事件
+        * */
+        sele(e) {
+            let inx = e.currentTarget.dataset.index
+            this.seles = inx
+            if(this.select.length === 2) {
+                if(inx === 0) {
+                    this.aa = true
+                    this.aaa = false
+                    this.aaaa = false
+                } else if(inx === 1) {
+                    this.aa = false
+                    this.aaa = true
+                    this.aaaa = false
+                }
+            } else if(this.select.length === 3) {
+                if(inx === 0) {
+                    this.aa = true
+                    this.aaa = false
+                    this.aaaa = false
+                } else if(inx === 1) {
+                    this.aa = false
+                    this.aaa = true
+                    this.aaaa = false
+                } else if(inx === 2) {
+                    this.aa = false
+                    this.aaa = false
+                    this.aaaa = true
+                }
+            }
+        },
+        /*
+        * 全部点击事件
+        * */
+        all(e) {
+            if(this.select.length === 1) {
+                this.locationContent = '地区'
+            } else if(this.select.length === 2) {
+                if(this.seles === 0) {
+                    this.locationContent = '地区'
+                    this.select = ['请选择']
+                } else if(this.seles === 1) {
+                    this.locationContent = this.select[0]
+                    this.location = this.select[0]
+                    this.pageNo = 1
+                    this.expertList = []
+                    this.expertLists()
+                }
+            } else if(this.select.length === 3) {
+                if(this.seles === 0) {
+                    this.locationContent = '地区'
+                    this.select = ['请选择']
+                    this.location = ''
+                    this.pageNo = 1
+                    this.expertList = []
+                    this.expertLists()
+                } else if(this.seles === 1) {
+                    this.select = [this.select[0],'请选择']
+                    this.locationContent = this.select[0]
+                    this.location = this.select[0]
+                    this.expertList = []
+                    this.pageNo = 1
+                    this.expertLists()
+                } else if(this.seles === 2) {
+                    this.locationContent = this.select[1]
+                    this.location = this.select[0]+','+this.select[1]
+                    this.pageNo = 1
+                    this.expertList = []
+                    this.expertLists()
+                }
+            }
+            this.donghua()
+        },
+
+        /*
+        * 省份点击事件
+        * */
+        ssClick(e) {
+            let index = e.currentTarget.dataset.index
+            this.sss = this.ss[index].city.map( item => {
+                return item
+            })
+            this.select = ['请选择']
+            this.select.splice(-1,0,this.ss[index].name)
+            this.seles = this.select.length-1
+            this.aa = false
+            this.aaa = true
+            this.aaaa = false
+        },
+        /*
+        * 市级点击事件
+        * */
+        ssClicks(e) {
+            let index = e.currentTarget.dataset.index
+            this.ssss = this.sss[index].area.map( item => {
+                return item
+            })
+            if(this.select.length === 2) {
+                this.select.splice(-1,0,this.sss[index].name1)
+            } else{
+                this.select.splice(-2,1,this.sss[index].name1)
+            }
+            this.seles = this.select.length-1
+            this.aa = false
+            this.aaa = false
+            this.aaaa = true
+        },
+        /*
+        * 县、区 点击事件
+        * */
+        ssClickss(e) {
+            let index = e.currentTarget.dataset.index
+            this.donghua()
+            this.select.pop()
+            this.select.push(this.ssss[index])
+            this.locationContent = this.select[this.select.length-1]
+            this.location = this.select.join(',')
+            this.pageNo = 1
+            this.expertList = []
+            this.expertLists()
+        }
+    };
+    /*
+    * z专家列表请求
+    * */
+      expertLists() {
+          this.loading = true
+          wx.request({
+              url: `${this.$parent.globalData.h5url}/zzj/search/expert.do`,
+              data: {
+                  pageNo: this.pageNo,
+                  pageSize: 20,
+                  questionType: this.questionType,
+                  keyword: this.keyword,
+                  specie: this.specie,
+                  location: this.location
+              },
+              header: {
+                  'content-type': 'application/json'
+              },
+              success: (res) => {
+                  this.loading = false
+                  if(res.data.data.queryList.length > 0) {
+                      res.data.data.queryList.forEach( item => {
+                          this.expertList.push({
+                              img: `${this.$parent.globalData.img_host}${item.headImg}`,
+                              name: item.name,
+                              text: item.professional,
+                              a: '特约',
+                              address: item.company,
+                              ling: item.allSpecies,
+                              uuid: item.uuid
+                          })
+                      })
+                      this.totalPages = res.data.data.totalPages
+                  } else {
+                      this.more = true
+                  }
+                  this.$apply()
+              }
+          })
+      }
+      /*
+     * 下拉触底
+     * */
+      onReachBottom() {
+          if(this.species) {
+              this.loading = true
+              if(this.pageNo*1+1 <= this.totalPages) {
+                  this.pageNo ++
+                  this.expertLists()
+              } else {
+                  this.loading = false
+                  this.more = true
+              }
+          } else {
+              this.loading = false
+              this.more = false
+          }
+
+      }
+    onLoad(options) {
+        this.speciesList = [...this.wuzhong[0].second,...this.wuzhong[1].second]
+        this.selectList = selectList
+        this.questionType = options.questionType || ''
+        this.keyword = options.keyword || ''
+        this.expertLists()
+        this.ss = this.selectList.map( item => {
+            return item
+        })
+    }
+      onShareAppMessage() {}
+  }
+</script>

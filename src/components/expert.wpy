@@ -1,0 +1,111 @@
+
+<style lang="scss">
+    .zhuanjia {
+        height: 230rpx;
+        background: white;
+        margin-bottom: 14rpx;
+        padding: 30rpx;
+        box-sizing: border-box;
+        display: flex;
+        .img1 {
+            flex: 0 0 133rpx;
+            height: 171rpx;
+            margin-right: 30rpx;
+            background: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+        .detail {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 24rpx;
+            .name {
+                display: flex;
+                view:nth-child(1) {
+                    font-family: "PingFangSC Medium";
+                    color: #33485c;
+                    font-size: 30rpx;
+                    font-weight: 600;
+                    margin-right: 20rpx;
+                }
+                view:nth-child(2) {
+                    font-family: "PingFangSC Regular";
+                    color: #2cd088;
+                }
+            }
+            .teyue {
+                width: 90rpx;
+                height: 36rpx;
+                line-height: 36rpx;
+                text-align: center;
+                border-radius: 36rpx;
+                border: 1px solid #AF9354;
+                color: #AF9354;
+                font-size: 24rpx;
+            }
+            .noteyue {
+                height: 20rpx;
+            }
+            .address {
+                font-family: "PingFangSC Regular";
+                color: #979da4;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+            }
+        }
+    }
+</style>
+
+<template>
+    <repeat for="{{expertList}}" key="{{index}}">
+        <view class="zhuanjia" data-id="{{item.uuid}}" @tap="skipDetails">
+            <!--<image class="img1" mode="scaleToFill" src="{{item.img}}"/>-->
+            <view class="img1" style="background-image: url('{{item.img}}')"></view>
+            <view class="detail">
+                <view class="name">
+                    <view>{{item.name}}</view>
+                    <view>{{item.text}}</view>
+                </view>
+                <view wx:if="{{item.a}}" class="teyue">{{item.a}}</view>
+                <view wx:if="{{!item.a}}" class="noteyue"></view>
+                <view wx:if="{{item.address}}" class="address">{{item.address == 'null' ? '' : item.address ? item.address : ''}}</view>
+                <view class="address">擅长领域：{{item.ling}}</view>
+            </view>
+        </view>
+    </repeat>
+</template>
+
+<script>
+
+  import wepy from 'wepy'
+
+  export default class Expert extends wepy.component{
+    data = {
+
+    }
+    props = {
+      expertList: {
+        type: Object,
+        coerce: function (res){
+          return res
+        },
+        default: {}
+      }
+    }
+    methods = {
+      skipDetails(e) {
+
+        this.$emit('skipDetails', e)
+      }
+    }
+    onLoad(){
+
+    }
+
+  }
+
+</script>
